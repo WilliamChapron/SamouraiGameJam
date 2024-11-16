@@ -32,7 +32,19 @@ public class Attack : MonoBehaviour
     private Animator animator;
 
     //State
-    private int attackState = -1;
+    private bool isLightAttacking = false;
+    private bool isComboAttacking = false;
+
+    public bool IsLightAttacking
+    {
+        get { return isLightAttacking; }
+        set { isLightAttacking = value; }
+    }
+    public bool IsComboAttacking
+    {
+        get { return isComboAttacking; }
+        set { isComboAttacking = value; }
+    }
 
     private void Start()
     {
@@ -44,19 +56,16 @@ public class Attack : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            attackState = 0;
             AttackLight(0);
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            attackState = 1;
             AttackLight(1);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            attackState = 2;
             AttackCombo();
         }
 
@@ -64,21 +73,20 @@ public class Attack : MonoBehaviour
 
     private void AttackLight(int side)
     {
+        if (isLightAttacking)
+        {
+            Debug.LogWarning("Attaque légère déjà en cours !");
+            return;
+        }
+
         if (Time.time >= lastLightAttackTime + lightAttackCooldown)
         {
-
+            isLightAttacking = true;
 
             if (side == 0)
-            {
                 animator.SetTrigger("LightAttackLeft");
-            }
-            if (side == 1)
-            {
+            else if (side == 1)
                 animator.SetTrigger("LightAttackRight");
-            }
-
-            
-
 
             PerformAttack(lightAttackDamage);
             StartCoroutine(EnableComboWindow());
@@ -92,9 +100,15 @@ public class Attack : MonoBehaviour
 
     private void AttackCombo()
     {
+        if (isComboAttacking)
+        {
+            Debug.LogWarning("Combo déjà en cours !");
+            return;
+        }
+
         if (canCombo && Time.time >= lastComboTime + comboCooldown)
         {
-            Debug.Log("Lancement de l'attaque combo !");
+            isComboAttacking = true;
 
             animator.SetTrigger("ComboAttack");
             PerformAttack(comboDamage);

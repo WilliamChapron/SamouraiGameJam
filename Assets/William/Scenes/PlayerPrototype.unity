@@ -553,8 +553,12 @@ MonoBehaviour:
   sprintSpeed: 10
   rotationSpeed: 600
   cameraTransform: {fileID: 1831617617}
-  gravity: -9.81
-  jumpHeight: 1
+  gravity: -3
+  jumpHeight: 3
+  accelerationFactor: 2.5
+  decelerationFactor: 0.5
+  fallAccelerationFactor: 4
+  slowTimeDuration: 2
   rollSpeed: 10
   rollAcceleration: 1.5
   rollDeceleration: 0.5
@@ -579,7 +583,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2147483648
   lightAttackDamage: 10
-  lightAttackCooldown: 0.5
+  lightAttackCooldown: 0
   comboDamage: 25
   comboCooldown: 2
   comboWindow: 1
@@ -1670,7 +1674,7 @@ GameObject:
   - component: {fileID: 1831617621}
   - component: {fileID: 1831617620}
   - component: {fileID: 1831617619}
-  - component: {fileID: 1831617618}
+  - component: {fileID: 1831617622}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1694,21 +1698,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1831617618
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1831617616}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b5f05d8285d1c2045aded85802b7fd02, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  player: {fileID: 553785679}
-  rotationSpeed: 5
-  offset: {x: 0, y: 2.5, z: -8}
 --- !u!114 &1831617619
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1794,7 +1783,7 @@ Camera:
     height: 1
   near clip plane: 0.1
   far clip plane: 5000
-  field of view: 60.68
+  field of view: 73
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -1812,6 +1801,22 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
+--- !u!114 &1831617622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1831617616}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b5f05d8285d1c2045aded85802b7fd02, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  player: {fileID: 553785679}
+  rotationSpeed: 5
+  offset: {x: 0, y: 3.48, z: -7.39}
+  offsetRotation: {x: 13.93, y: 0, z: 0}
 --- !u!1 &1846734903
 GameObject:
   m_ObjectHideFlags: 0

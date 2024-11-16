@@ -29,21 +29,27 @@ public class PlayerController : MonoBehaviour
     private bool isGrounded;
     private bool isJumping;
 
-    // Roll
-    public float rollSpeed = 15f;  // La vitesse initiale de la roulade
-    public float rollAcceleration = 25f;  // L'accélération pendant la roulade
-    public float rollDeceleration = 5f;  // La décélération après la roulade
-    public float rollDuration = 1f;  // Durée de la roulade
+    private float jumpTime = 0f; // Temps écoulé pendant le saut
+    public float accelerationFactor = 2.5f;  // Facteur d'accélération initiale
+    public float decelerationFactor = 0.5f;  // Facteur de décélération (ralentissement)
+    public float fallAccelerationFactor = 2.5f;  // Facteur d'accélération de la chute après 2 secondes
+    public float slowTimeDuration = 2f;  // Durée pendant laquelle le saut ralentit
 
-    private bool isRolling = false;  // Si le joueur est en train de rouler
-    private float rollTime = 0f;  // Temps écoulé dans la roulade
-    private Vector3 rollDirection;  // Direction de la roulade
+    // Roll
+    public float rollSpeed = 15f;  
+    public float rollAcceleration = 25f;  
+    public float rollDeceleration = 5f; 
+    public float rollDuration = 1f;  
+
+    private bool isRolling = false;  
+    private float rollTime = 0f; 
+    private Vector3 rollDirection;  
 
     // Crouch settings for roll
     private float originalHeight;
     private Vector3 originalCenter;
-    public float crouchHeight = 0.5f;  // Hauteur du collider en mode roulade
-    public Vector3 crouchCenter = new Vector3(0f, 0.25f, 0f);  // Centre du collider en mode roulade
+    public float crouchHeight = 0.5f; 
+    public Vector3 crouchCenter = new Vector3(0f, 0.25f, 0f);  
 
 
     // Shift control to active roll at time
@@ -122,12 +128,7 @@ public class PlayerController : MonoBehaviour
         }
 
         // Jump
-        if (isGrounded && Input.GetButtonDown("Jump"))
-        {
-            animator.SetTrigger("Jump");
-            velocityY = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            isJumping = true;
-        }
+        HandleJump();
         //
 
         if (movement.magnitude >= 0.1f)
@@ -193,6 +194,38 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    private void HandleJump()
+    {
+        if (isGrounded && Input.GetButtonDown("Jump"))
+        {
+            // Commencer le saut
+            animator.SetTrigger("Jump");
+            isJumping = true;
+            jumpTime = 0f; // Réinitialiser le temps du saut
+            velocityY = Mathf.Sqrt(jumpHeight * -2f * gravity); // Initialiser la vitesse verticale pour un départ rapide
+        }
+
+        if (isJumping)
+        {
+            // Gérer le temps du saut et ajuster la vitesse verticale (velocityY)
+            jumpTime += Time.deltaTime;
+
+            if (jumpTime < 0.3f) // Accélération initiale du saut
+            {
+                velocityY = Mathf.Lerp(velocityY, velocityY + accelerationFactor, jumpTime / 0.3f); // Départ rapide
+            }
+            else if (jumpTime < slowTimeDuration) // Ralentir pendant la durée spécifiée
+            {
+                velocityY = velocityY + gravity * Time.deltaTime * decelerationFactor; // Applique la gravité pour la chute rapide
+            }
+
+            else // Après la durée du ralentissement, commence à tomber rapidement
+            {
+                velocityY = velocityY + gravity * Time.deltaTime * fallAccelerationFactor; // Applique la gravité pour la chute rapide
+            }
+        }
+    }
+
     #region Roll Handling
     private void StartRoll()
     {
@@ -209,23 +242,21 @@ public class PlayerController : MonoBehaviour
 
     private void HandleRoll()
     {
-        rollTime += Time.deltaTime;  // Incrément du temps de roulade
+        rollTime += Time.deltaTime;  
 
-        // Application de l'accélération pendant la première moitié de la roulade
         if (rollTime < rollDuration / 2f)
         {
             float accelerationFactor = Mathf.Lerp(1f, 1 + rollAcceleration, rollTime / (rollDuration / 2f));
-            curSpeed = rollSpeed * accelerationFactor;  // Augmente la vitesse pendant la première moitié
+            curSpeed = rollSpeed * accelerationFactor;  
         }
-        // Application de la décélération pendant la seconde moitié de la roulade
         else if (rollTime < rollDuration)
         {
             float decelerationFactor = Mathf.Lerp(1f, 1 - rollDeceleration, (rollTime - (rollDuration / 2f)) / (rollDuration / 2f));
-            curSpeed = rollSpeed * decelerationFactor;  // Réduit la vitesse pendant la seconde moitié
+            curSpeed = rollSpeed * decelerationFactor;  
         }
         else
         {
-            // Fin de la roulade, retour à l'état initial
+
             isRolling = false;
             curSpeed = walkSpeed;
             characterController.height = originalHeight;
