@@ -7,6 +7,9 @@ public class PlayerController : MonoBehaviour
     // Anim
     private Animator animator;
 
+    private HealthComponent healthComponent;
+    private Attack attackComponent;
+
     // Speed
     public float curSpeed = 0f;
     public float walkSpeed = 5f;
@@ -68,12 +71,46 @@ public class PlayerController : MonoBehaviour
         originalCenter = characterController.center;
 
         animator = GetComponentInChildren<Animator>();
+
+        // Component
+        healthComponent = GetComponentInChildren<HealthComponent>();
+        attackComponent = GetComponentInChildren<Attack>();
     }
     #endregion
 
     #region Update Method
     private void Update()
     {
+
+        if (healthComponent.isDead)
+        {
+            ApplyGravity();
+
+            // Velocity
+            currentVelocity.x = 0;
+            currentVelocity.z = 0;
+            currentVelocity.y = velocityY;
+            characterController.Move(currentVelocity * Time.deltaTime);
+
+            if (attackComponent.attackPoint1 != null)
+            {
+                attackComponent.attackPoint1.parent = null;
+                Rigidbody rb1 = attackComponent.attackPoint1.gameObject.GetComponent<Rigidbody>();
+                rb1.isKinematic = false; 
+                rb1.useGravity = true; 
+            }
+
+            if (attackComponent.attackPoint2 != null)
+            {
+                attackComponent.attackPoint2.parent = null;
+                Rigidbody rb2 = attackComponent.attackPoint2.gameObject.GetComponent<Rigidbody>();
+                rb2.isKinematic = false; 
+                rb2.useGravity = true; 
+            }
+
+            return;
+        }
+
         if (Input.GetKeyDown(KeyCode.LeftControl) && !isRolling && isGrounded)  
         {
             if (lastShiftTime >= 0f && (Time.time - lastShiftTime <= maxShiftDelay))
@@ -284,3 +321,8 @@ public class PlayerController : MonoBehaviour
 // HIT REACTION (react)
 
 // Saut acceleration depart lente et retombe rapide 
+
+// Katana tombe meurt 
+
+
+// MODE KATANA, MODE kunai 
