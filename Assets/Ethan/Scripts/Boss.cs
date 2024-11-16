@@ -1,4 +1,5 @@
 using System;
+using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -12,7 +13,7 @@ public class Boss : MonoBehaviour {
 
     [Serializable] struct Stats {
         [Range(0, 100)] public float health;
-        [Range(0, 100)] public float attack;
+        [HideInInspector] public float time;
     }
     [SerializeField] Stats stats;
 
@@ -25,13 +26,12 @@ public class Boss : MonoBehaviour {
     }
     [SerializeField] Detection detection;
 
-    [Serializable] struct Movements {
-        [Range(0, 100)] public float range;
-    }
-    [SerializeField] Movements movements;
-
     [Serializable] struct Standard {
         public float dammage;
+        public float duration;
+        public float interval;
+
+        [HideInInspector] public float time;
     }
     [Serializable] struct Rain {
         public GameObject projectile;
@@ -40,6 +40,7 @@ public class Boss : MonoBehaviour {
         [HideInInspector] public float time;
     }
     [Serializable] struct Attacks {
+        public Standard standard;
         public Rain rain;
     }
     [SerializeField] Attacks attacks;
@@ -48,35 +49,48 @@ public class Boss : MonoBehaviour {
     // Privates
     Animator animator;
     NavMeshAgent agent;
+
     Vector3 original;
-    Vector3 target;
+    float originalSpeed;
 
     void Start() {
-        agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
+        agent = GetComponent<NavMeshAgent>();
         original = transform.position;
+        originalSpeed = agent.speed;
     }
+
     float time = 0;
-    bool attack = false;
+
     void Update() {
         Collider[] colliders = Physics.OverlapSphere(original, detection.range, detection.mask);
 
-        animator.SetBool("Walk", agent.velocity.magnitude != 0);
+        animator.SetBool("Walk", agent.velocity.magnitude != 0 && agent.speed == originalSpeed);
+        animator.SetBool("Run", agent.velocity.magnitude != 0 && agent.speed == originalSpeed * 2);
+
+        if(stats.time < 30) { stats.time += Time.deltaTime; }
+        else { state = UnityEngine.Random.Range(0, 3); stats.time = 0; }
         
         switch (state) {
             case 0:
+                agent.speed = originalSpeed;
+
                 foreach (Collider collider in colliders) {
                     if (collider.tag == detection.tag) agent.SetDestination(collider.gameObject.transform.position);
                 }
 
-                if (agent.remainingDistance > detection.minDistance) attack = false;
+                if(agent.isStopped) {
+                    if (attacks.standard.time < attacks.standard.duration) { attacks.standard.time += Time.deltaTime; }
+                    else { attacks.standard.time = 0; agent.isStopped = false; }
+                }
 
-                if (agent.remainingDistance < detection.minDistance && !attack) {
-                    animator.SetTrigger("Attack1");
-                    attack = true;
+                if (agent.remainingDistance < detection.minDistance && !agent.isStopped) {
+                    agent.isStopped = true;
+                    animator.SetTrigger("Attack2");
                 }
                 break;
             case 1:
+                agent.speed = originalSpeed * 2;
                 if (agent.remainingDistance < detection.minDistance) {
                     foreach (Collider collider in colliders) {
                         if (collider.tag == detection.tag) agent.SetDestination(collider.gameObject.transform.position);
@@ -85,6 +99,7 @@ public class Boss : MonoBehaviour {
                 break;
             case 2:
                 agent.SetDestination(original);
+                if (agent.remainingDistance <= 0) { animator.SetTrigger("Meteor"); state = 3; }
                 break;
             case 3:
                 if (time < attacks.rain.duration) { time += Time.deltaTime; }
@@ -100,13 +115,9 @@ public class Boss : MonoBehaviour {
             default:
                 break;
         }
-
     }
 
     private void OnDrawGizmos() {
-        Gizmos.color = Color.green;
-        Gizmos.DrawWireSphere(transform.position, movements.range);
-
         if(!Application.isPlaying) {
             Gizmos.color = Color.red;
             Gizmos.DrawWireSphere(transform.position, detection.range);
