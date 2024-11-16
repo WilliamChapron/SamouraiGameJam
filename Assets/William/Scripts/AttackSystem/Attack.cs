@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class AttackSystemDebug : MonoBehaviour
+public class Attack : MonoBehaviour
 {
     [Header("General Settings")]
     public Transform attackPoint; 
@@ -31,38 +31,58 @@ public class AttackSystemDebug : MonoBehaviour
     private AudioSource audioSource;
     private Animator animator;
 
+    //State
+    private int attackState = -1;
+
     private void Start()
     {
-        animator = GetComponent<Animator>();
+        animator = GetComponentInChildren<Animator>();
         audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0)) 
+        if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            AttackLight();
+            attackState = 0;
+            AttackLight(0);
         }
 
-        //if (Input.GetKeyDown(KeyCode.Mouse1)) 
-        //{
-        //    AttackCombo();
-        //}
+        if (Input.GetKeyDown(KeyCode.Mouse1))
+        {
+            attackState = 1;
+            AttackLight(1);
+        }
+
+        if (Input.GetKeyDown(KeyCode.R))
+        {
+            attackState = 2;
+            AttackCombo();
+        }
+
     }
 
-    private void AttackLight()
+    private void AttackLight(int side)
     {
         if (Time.time >= lastLightAttackTime + lightAttackCooldown)
         {
-            Debug.Log("Lancement de l'attaque légère !");
-            //animator.SetTrigger("AttackLight");
+
+
+            if (side == 0)
+            {
+                animator.SetTrigger("LightAttackLeft");
+            }
+            if (side == 1)
+            {
+                animator.SetTrigger("LightAttackRight");
+            }
+
+            
+
+
             PerformAttack(lightAttackDamage);
-            //PlayAttackEffects("light");
             StartCoroutine(EnableComboWindow());
             lastLightAttackTime = Time.time;
-
-
-            //CreateDebugTrail();
         }
         else
         {
@@ -75,14 +95,12 @@ public class AttackSystemDebug : MonoBehaviour
         if (canCombo && Time.time >= lastComboTime + comboCooldown)
         {
             Debug.Log("Lancement de l'attaque combo !");
-            //animator.SetTrigger("AttackCombo");
+
+            animator.SetTrigger("ComboAttack");
             PerformAttack(comboDamage);
-            //PlayAttackEffects("combo");
+
             lastComboTime = Time.time;
             canCombo = false;
-
-            // Générer une traînée pour le combo
-            //CreateDebugTrail(true);
         }
         else if (!canCombo)
         {
@@ -134,30 +152,30 @@ public class AttackSystemDebug : MonoBehaviour
         }
     }
 
-    private void CreateDebugTrail(bool isCombo = false)
-    {
-        if (debugTrailPrefab != null)
-        {
-            var trail = Instantiate(debugTrailPrefab, attackPoint.position, Quaternion.identity);
-            var trailColor = isCombo ? Color.blue : Color.yellow;
-            trail.GetComponent<Renderer>().material.color = trailColor;
-            Destroy(trail, 1f); // Détruire la traînée après 1 seconde
-        }
-    }
+    //private void CreateDebugTrail(bool isCombo = false)
+    //{
+    //    if (debugTrailPrefab != null)
+    //    {
+    //        var trail = Instantiate(debugTrailPrefab, attackPoint.position, Quaternion.identity);
+    //        var trailColor = isCombo ? Color.blue : Color.yellow;
+    //        trail.GetComponent<Renderer>().material.color = trailColor;
+    //        Destroy(trail, 1f); // Détruire la traînée après 1 seconde
+    //    }
+    //}
 
-    private void OnDrawGizmosSelected()
-    {
-        if (attackPoint == null) return;
+    //private void OnDrawGizmosSelected()
+    //{
+    //    if (attackPoint == null) return;
 
-        // Visualiser la portée d'attaque
-        Gizmos.color = debugAttackRangeColor;
-        Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+    //    // Visualiser la portée d'attaque
+    //    Gizmos.color = debugAttackRangeColor;
+    //    Gizmos.DrawWireSphere(attackPoint.position, attackRange);
 
-        // Indiquer si le combo est activable
-        if (Application.isPlaying && canCombo)
-        {
-            Gizmos.color = Color.green;
-            Gizmos.DrawWireSphere(attackPoint.position, attackRange * 1.2f); // Cercle légèrement plus large
-        }
-    }
+    //    // Indiquer si le combo est activable
+    //    if (Application.isPlaying && canCombo)
+    //    {
+    //        Gizmos.color = Color.green;
+    //        Gizmos.DrawWireSphere(attackPoint.position, attackRange * 1.2f); // Cercle légèrement plus large
+    //    }
+    //}
 }

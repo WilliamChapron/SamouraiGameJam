@@ -241,13 +241,15 @@ public class PlayerController : MonoBehaviour
     #endregion
 }
 
-// #TODO box collide crouch - a tester
-// 2 compétences
 
-// 2 attaque, lourde et légère
-// Intégrer l'animator
-// Contre attaque (1 chance de louper)
+
+
+
+
 // knockBack 
 // lancer shuriken COMPETENCE 1
-// esquive
-// HIT REACTION (react
+
+
+// HIT REACTION (react)
+
+// Saut acceleration depart lente et retombe rapide 
