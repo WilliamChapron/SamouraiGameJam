@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class SuzanooAttackRechargeState : State
 {
-    EnemyStats enemyStats;
+    EnemyScript enemyStats;
     public SuzanooChaseState chaseState;
 
     public override State RunCurrentState()

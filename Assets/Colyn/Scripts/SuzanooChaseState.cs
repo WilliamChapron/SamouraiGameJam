@@ -10,11 +10,11 @@ public class SuzanooChaseState : State
 
     public Transform player;
     private NavMeshAgent agent;
-    EnemyStats enemyStats;
+    EnemyScript enemyStats;
 
     void Start()
     {
-        enemyStats = GetComponentInParent<EnemyStats>();
+        enemyStats = GetComponentInParent<EnemyScript>();
         
         agent = GetComponent<NavMeshAgent>();
         agent.speed = enemyStats.moveSpeed;

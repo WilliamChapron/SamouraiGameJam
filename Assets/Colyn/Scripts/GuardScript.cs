@@ -3,17 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class GuardScript : EnemyStats
+public class GuardScript : EnemyScript
 {
-    public NavMeshAgent agent;
+    float rotationToX;
+    float rotationToY;
 
-    void Start()
+    public override void Start()
     {
         moveSpeed = 3.0f;
-        agent = GetComponent<NavMeshAgent>();
-        agent.speed = moveSpeed;
 
         maxAttackCooldown = 5.0f;
+
+        base.Start();
+    }
+
+    private void Update()
+    {
+        // Turn to player
+
+        rotationToX = Quaternion.FromToRotation(transform.position, playerTransform.position).x;
+        rotationToY = Quaternion.FromToRotation(transform.position, playerTransform.position).y;
+        //transform.rotation.x = Mathf.LerpAngle(rotationToX, transform.rotation.x, 0.1f);
     }
 
 }

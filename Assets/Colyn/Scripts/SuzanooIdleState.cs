@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class SuzanooIdleState : State
 {
-    EnemyStats enemyStats;
+    EnemyScript enemyStats;
     public bool playerInSight;
     public SuzanooChaseState chaseState;
     public SuzanooAttackRechargeState attackRechargeState;
 
     void Start()
     {
-        enemyStats = GetComponentInParent<EnemyStats>();
+        enemyStats = GetComponentInParent<EnemyScript>();
     }
 
     public override State RunCurrentState()

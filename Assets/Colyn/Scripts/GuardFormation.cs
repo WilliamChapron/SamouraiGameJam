@@ -51,7 +51,8 @@ public class GuardFormation : MonoBehaviour
         guards[1].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, -5) + playerPosition);
         guards[2].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, 5) + playerPosition);
 
-        if (!isSomebodyAttacking)
+        // To do: Add more time between attacks
+        if (!isSomebodyAttacking) 
         {
             if(guardScripts[nextGuardToAttack].CanAttack())
             {
