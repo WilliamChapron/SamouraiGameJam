@@ -7,7 +7,7 @@ public class Boss : MonoBehaviour {
     [Header("Setup")]
     [SerializeField] new string name = "BOSS";
 
-    [Range(0, 2)]
+    [Range(0, 3)]
     [SerializeField] int state = 0;
 
     [Serializable] struct Stats {
@@ -30,6 +30,18 @@ public class Boss : MonoBehaviour {
     }
     [SerializeField] Movements movements;
 
+    [Serializable] struct Rain {
+        public GameObject projectile;
+        public float duration;
+        public float interval;
+        [HideInInspector] public float time;
+    }
+    [Serializable] struct Attacks {
+        public Rain rain;
+    }
+    [SerializeField] Attacks attacks;
+
+
     // Privates
     NavMeshAgent agent;
     Vector3 original;
@@ -39,7 +51,7 @@ public class Boss : MonoBehaviour {
         agent = GetComponent<NavMeshAgent>();
         original = transform.position;
     }
-
+    float time = 0;
     void Update() {
         Collider[] colliders = Physics.OverlapSphere(original, detection.range, detection.mask);
         switch (state) {
@@ -57,6 +69,17 @@ public class Boss : MonoBehaviour {
                 break;
             case 2:
                 agent.SetDestination(original);
+                break;
+            case 3:
+                if (time < attacks.rain.duration) { time += Time.deltaTime; }
+                else { time = 0; state = 0; break; }
+                
+                if(attacks.rain.time < attacks.rain.interval) { attacks.rain.time += Time.deltaTime; }
+                else {
+                    GameObject projectile = Instantiate(attacks.rain.projectile) as GameObject;
+                    projectile.transform.position = transform.position + new Vector3(UnityEngine.Random.Range(-detection.range, detection.range), 50, UnityEngine.Random.Range(-detection.range, detection.range));
+                    attacks.rain.time = 0;
+                }
                 break;
             default:
                 break;
