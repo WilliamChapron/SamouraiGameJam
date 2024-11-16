@@ -4,9 +4,9 @@ using UnityEngine;
 public class AttackSystemDebug : MonoBehaviour
 {
     [Header("General Settings")]
-    public Transform attackPoint; // Point d'origine des attaques
-    public float attackRange = 2f; // Portée des attaques
-    public LayerMask enemyLayer; // Couches à attaquer
+    public Transform attackPoint; 
+    public float attackRange = 2f; 
+    public LayerMask enemyLayer; 
 
     [Header("Light Attack Settings")]
     public float lightAttackDamage = 10f;
@@ -23,7 +23,7 @@ public class AttackSystemDebug : MonoBehaviour
     [Header("Effects & Debugging")]
     public GameObject lightAttackEffect;
     public GameObject comboAttackEffect;
-    public GameObject debugTrailPrefab; // Effet de traînée pour visualiser l'attaque
+    public GameObject debugTrailPrefab; 
     public Color debugAttackRangeColor = Color.red;
     public AudioClip lightAttackSound;
     public AudioClip comboAttackSound;
@@ -39,15 +39,15 @@ public class AttackSystemDebug : MonoBehaviour
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0)) // Clic gauche pour attaque légère
+        if (Input.GetKeyDown(KeyCode.Mouse0)) 
         {
             AttackLight();
         }
 
-        if (Input.GetKeyDown(KeyCode.Mouse1)) // Clic droit pour attaque combo
-        {
-            AttackCombo();
-        }
+        //if (Input.GetKeyDown(KeyCode.Mouse1)) 
+        //{
+        //    AttackCombo();
+        //}
     }
 
     private void AttackLight()
@@ -61,7 +61,7 @@ public class AttackSystemDebug : MonoBehaviour
             StartCoroutine(EnableComboWindow());
             lastLightAttackTime = Time.time;
 
-            //// Générer une traînée pour l'attaque légère
+
             //CreateDebugTrail();
         }
         else
@@ -82,7 +82,7 @@ public class AttackSystemDebug : MonoBehaviour
             canCombo = false;
 
             // Générer une traînée pour le combo
-            CreateDebugTrail(true);
+            //CreateDebugTrail(true);
         }
         else if (!canCombo)
         {
@@ -106,13 +106,10 @@ public class AttackSystemDebug : MonoBehaviour
     private void PerformAttack(float damage)
     {
         Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
+
         foreach (Collider enemy in hitEnemies)
         {
-            //if (enemy.TryGetComponent<EnemyHealth>(out EnemyHealth enemyHealth))
-            //{
-            //    enemyHealth.TakeDamage(damage);
-            //    Debug.Log($"Attaque réussie sur {enemy.name} ! Dégâts infligés : {damage}");
-            //}
+            Debug.Log($"Enemy hit: {enemy.name}");
         }
 
         if (hitEnemies.Length == 0)
