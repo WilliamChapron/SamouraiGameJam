@@ -36,9 +36,9 @@ public class GuardFormation : MonoBehaviour
 
     void Start()
     {
-        guards[0] = Instantiate(guardPrefab, transform.position + new Vector3(-5, 0, 0), transform.rotation, transform);
-        guards[1] = Instantiate(guardPrefab, transform.position + new Vector3(-2, 0, -5), transform.rotation, transform);
-        guards[2] = Instantiate(guardPrefab, transform.position + new Vector3(-2, 0, 5), transform.rotation, transform);
+        guards[0] = Instantiate(guardPrefab, transform.position + new Vector3(-4, 0, 0), transform.rotation, transform);
+        guards[1] = Instantiate(guardPrefab, transform.position + new Vector3(2, 0, -5), transform.rotation, transform);
+        guards[2] = Instantiate(guardPrefab, transform.position + new Vector3(2, 0, 5), transform.rotation, transform);
 
         guardStateManagers[0] = guards[0].GetComponent<StateManager>();
         guardStateManagers[1] = guards[1].GetComponent<StateManager>();
@@ -71,9 +71,9 @@ public class GuardFormation : MonoBehaviour
             randomGuardOffset[2] = new Vector3(Random.Range(-randomOffsetRange, randomOffsetRange), 0, Random.Range(-randomOffsetRange, randomOffsetRange));
         }
 
-        guards[0].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-5, 0, 0) + playerPosition + randomGuardOffset[0]);
-        guards[1].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, -5) + playerPosition + randomGuardOffset[1]);
-        guards[2].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, 5) + playerPosition + randomGuardOffset[2]);
+        guards[0].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-4, 0, 0) + playerPosition + randomGuardOffset[0]);
+        guards[1].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(2, 0, -5) + playerPosition + randomGuardOffset[1]);
+        guards[2].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(2, 0, 5) + playerPosition + randomGuardOffset[2]);
 
         if (!isSomebodyAttacking) 
         {
@@ -83,8 +83,6 @@ public class GuardFormation : MonoBehaviour
             {
                 if (guardScripts[nextGuardToAttack].CanAttack())
                 {
-                    //guardScripts[nextGuardToAttack].TakeHit();
-
                     guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>().player = playerObject.transform;
                     guardStateManagers[nextGuardToAttack].SwitchToNextState(guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>());
                     

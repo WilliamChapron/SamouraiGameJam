@@ -20,8 +20,12 @@ public class EnemyScript : MonoBehaviour
     GameObject playerObject;
     public Transform playerTransform;
 
+    protected Animator animator;
+
     public virtual void Start()
     {
+        animator = GetComponentInChildren<Animator>();
+
         playerObject = GameObject.Find("Player");
         playerTransform = playerObject.transform;
 
@@ -69,10 +73,12 @@ public class EnemyScript : MonoBehaviour
     {
         // Play attack animation
 
+        animator.Play("Attack");
+
         // Run this in animation
 
         // If collision with attack hitbox, deal damage
-        if(attackCollider.playerCollides)
+        if (attackCollider.playerCollides)
         {
             //Player.TakeDamage(damage);
         }

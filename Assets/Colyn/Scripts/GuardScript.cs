@@ -14,6 +14,9 @@ public class GuardScript : EnemyScript
     public GuardKnockbackState knockbackState;
     public StateManager stateManager;
 
+    int VelocityXHash;
+    int VelocityZHash;
+
     public override void Start()
     {
         stateManager = GetComponent<StateManager>();
@@ -21,6 +24,9 @@ public class GuardScript : EnemyScript
         moveSpeed = 2.0f;
 
         maxAttackCooldown = 5.0f;
+
+        VelocityXHash = Animator.StringToHash("VelocityX");
+        VelocityZHash = Animator.StringToHash("VelocityZ");
 
         base.Start();
     }
@@ -56,6 +62,15 @@ public class GuardScript : EnemyScript
             Debug.Log("Knockback Reset");
         }
 
-        //transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
+        Vector3 worldDeltaPosition = agent.destination - transform.position;
+
+        // Map 'worldDeltaPosition' to local space
+        float dx = Vector3.Dot(transform.right, worldDeltaPosition);
+        float dy = Vector3.Dot(transform.forward, worldDeltaPosition);
+        Vector2 deltaPosition = new Vector2(dx, dy);
+
+        Vector3 walkVector = (transform.position - agent.destination);
+        animator.SetFloat(VelocityXHash, dx);
+        animator.SetFloat(VelocityZHash, dy);
     }
 }

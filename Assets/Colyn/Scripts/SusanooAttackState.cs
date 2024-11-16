@@ -7,6 +7,9 @@ public class SusanooAttackState : State
     SusanooScript susanooScript;
     public SusanooAttackRechargeState attackRechargeState;
 
+    float attackTime = 0.5f;
+    float maxAttackTime = 0.5f;
+
     void Start()
     {
         susanooScript = GetComponentInParent<SusanooScript>();
@@ -18,6 +21,14 @@ public class SusanooAttackState : State
         Debug.Log("Attacks");
         susanooScript.Attack();
 
-        return attackRechargeState;
+        attackTime -= Time.deltaTime;
+
+        if (attackTime < 0)
+        {
+            attackTime = maxAttackTime;
+            return attackRechargeState;
+        }
+
+        return this;
     }
 }

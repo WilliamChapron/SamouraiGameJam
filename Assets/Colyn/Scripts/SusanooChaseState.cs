@@ -19,7 +19,7 @@ public class SusanooChaseState : State
 
     public override State RunCurrentState()
     {
-        playerInAttackRange = (transform.position - susanooScript.playerTransform.position).magnitude <= 2.0f;
+        playerInAttackRange = (transform.position - susanooScript.playerTransform.position).magnitude <= 2.5f;
         playerInFront = susanooScript.attackCollider.playerCollides;
 
         if (!playerInAttackRange)

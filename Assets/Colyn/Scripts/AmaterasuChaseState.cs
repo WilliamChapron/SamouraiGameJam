@@ -19,7 +19,7 @@ public class AmaterasuChaseState : State
     {
         // Straight slow path towards player
 
-        playerInAttackRange = (transform.position - amaterasu.playerTransform.position).magnitude <= 1.5f;
+        playerInAttackRange = (transform.position - amaterasu.playerTransform.position).magnitude <= 2.0f;
 
         playerInFront = amaterasu.attackCollider.playerCollides;
 
