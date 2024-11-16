@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class nav : MonoBehaviour
 {
-    public bool IsStateChase;
     public Transform player;
     private NavMeshAgent agent;
 
