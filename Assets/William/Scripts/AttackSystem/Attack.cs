@@ -148,6 +148,9 @@ public class Attack : MonoBehaviour
 
         foreach (Collider enemy in hitEnemies)
         {
+            if(enemy.gameObject.tag == "Boss") {
+                enemy.gameObject.GetComponent<Boss>().TakeDammage(5);
+            }
             Debug.Log($"Enemy hit: {enemy.name}");
         }
 

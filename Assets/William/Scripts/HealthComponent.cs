@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class HealthComponent : MonoBehaviour
 {
@@ -8,7 +9,8 @@ public class HealthComponent : MonoBehaviour
 
     [Header("Health Settings")]
     public float maxHealth = 100f; 
-    private float currentHealth;   
+    [SerializeField] private float currentHealth;
+    [SerializeField] Slider lifebar;
 
     [Header("Death Settings")]
     public bool isDead = false; 
@@ -21,6 +23,7 @@ public class HealthComponent : MonoBehaviour
 
     private void Update()
     {
+        lifebar.value = currentHealth / maxHealth;
     }
 
     private void Die()

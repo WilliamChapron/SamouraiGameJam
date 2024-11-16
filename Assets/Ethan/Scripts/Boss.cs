@@ -1,15 +1,19 @@
 using System;
-using UnityEditor.ShaderGraph.Internal;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Boss : MonoBehaviour {
 
     [Header("Setup")]
     [SerializeField] new string name = "BOSS";
 
+    [SerializeField] Slider slider;
+
     [Range(0, 3)]
     [SerializeField] int state = 0;
+    
+    float health;
 
     [Serializable] struct Stats {
         [Range(0, 100)] public float health;
@@ -54,6 +58,7 @@ public class Boss : MonoBehaviour {
     float originalSpeed;
 
     void Start() {
+        health = stats.health;
         animator = GetComponentInChildren<Animator>();
         agent = GetComponent<NavMeshAgent>();
         original = transform.position;
@@ -63,10 +68,12 @@ public class Boss : MonoBehaviour {
     float time = 0;
 
     void Update() {
+        slider.value = health / stats.health;
+
         Collider[] colliders = Physics.OverlapSphere(original, detection.range, detection.mask);
 
         animator.SetBool("Walk", agent.velocity.magnitude != 0 && agent.speed == originalSpeed);
-        animator.SetBool("Run", agent.velocity.magnitude != 0 && agent.speed == originalSpeed * 2);
+        animator.SetBool("Run", agent.velocity.magnitude != 0 && agent.speed == originalSpeed * 3);
 
         if(stats.time < 30) { stats.time += Time.deltaTime; }
         else { state = UnityEngine.Random.Range(0, 3); stats.time = 0; }
@@ -115,6 +122,15 @@ public class Boss : MonoBehaviour {
             default:
                 break;
         }
+    }
+
+    public void Die() {
+        Destroy(gameObject);
+    }
+
+    public void TakeDammage(float ammount) {
+        if (health > 0) { health -= ammount; }
+        else { Die(); }
     }
 
     private void OnDrawGizmos() {
