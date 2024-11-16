@@ -91,6 +91,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 526ccfe47a69d7b4ca744b54f5935fac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  idleState: {fileID: 3130885170545284967}
 --- !u!1 &8356320717153721420
 GameObject:
   m_ObjectHideFlags: 0
@@ -149,7 +150,6 @@ GameObject:
   - component: {fileID: 898958029993621102}
   - component: {fileID: 1808603839586784260}
   - component: {fileID: 6066065122330722491}
-  - component: {fileID: 3620835454601065118}
   - component: {fileID: 6223812450959266586}
   - component: {fileID: 4337640664560191017}
   - component: {fileID: 4444110834688515315}
@@ -231,22 +231,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &3620835454601065118
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8686193416464260064}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7a47cdd290660754bba98c23941d2cae, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  attackCooldown: 0
-  currentHealth: 0
-  damage: 0
-  moveSpeed: 0
 --- !u!114 &6223812450959266586
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -317,4 +301,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80bbaf4af4019004f8d8d7d8a8fb344c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  maxAttackCooldown: 0
+  attackCooldown: 0
+  currentHealth: 0
+  damage: 0
+  moveSpeed: 0
   agent: {fileID: 0}

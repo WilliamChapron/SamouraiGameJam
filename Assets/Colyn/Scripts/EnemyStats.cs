@@ -6,14 +6,19 @@ public class PlayerStats : MonoBehaviour { }
 
 public class EnemyStats : MonoBehaviour
 {
-    float maxAttackCooldown;
+    public float maxAttackCooldown;
     public float attackCooldown = 0;
     int maxHealth;
     public int currentHealth;
 
     public int damage;
     public float moveSpeed;
-    
+
+    private void Update()
+    {
+        attackCooldown -= Time.deltaTime;
+    }
+
     void SetAttackCooldown()
     {
         attackCooldown = maxAttackCooldown;

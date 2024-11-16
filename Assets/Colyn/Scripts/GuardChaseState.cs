@@ -11,8 +11,6 @@ public class GuardChaseState : State
     GuardScript guard;
 
     public Transform player;
-    
-    EnemyStats enemyStats;
 
     void Start()
     {
@@ -21,6 +19,8 @@ public class GuardChaseState : State
 
     public override State RunCurrentState()
     {
+        playerInAttackRange = (transform.position - player.position).magnitude <= 2.0f;
+
         if (playerInAttackRange)
         {
             return attackState;

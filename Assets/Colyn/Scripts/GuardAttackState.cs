@@ -4,12 +4,12 @@ using UnityEngine;
 
 public class GuardAttackState : State
 {
-    EnemyStats enemyStats;
-    GuardIdleState idleState;
+    GuardScript enemyStats;
+    public GuardIdleState idleState;
 
     void Start()
     {
-        enemyStats = GetComponentInParent<EnemyStats>();
+        enemyStats = GetComponentInParent<GuardScript>();
     }
 
     public override State RunCurrentState()

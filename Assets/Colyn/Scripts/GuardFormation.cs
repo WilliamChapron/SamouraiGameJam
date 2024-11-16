@@ -16,6 +16,8 @@ public class GuardFormation : MonoBehaviour
 
     bool[] isGuardAttacking = new bool[3];
 
+    GuardScript[] guardScripts = new GuardScript[3];
+
     GameObject playerObject;
 
     void Start()
@@ -27,6 +29,10 @@ public class GuardFormation : MonoBehaviour
         guardStateManagers[0] = guards[0].GetComponent<StateManager>();
         guardStateManagers[1] = guards[1].GetComponent<StateManager>();
         guardStateManagers[2] = guards[2].GetComponent<StateManager>();
+
+        guardScripts[0] = guards[0].GetComponent<GuardScript>();
+        guardScripts[1] = guards[1].GetComponent<GuardScript>();
+        guardScripts[2] = guards[2].GetComponent<GuardScript>();
 
         playerObject = GameObject.Find("Player");
     }
@@ -41,19 +47,18 @@ public class GuardFormation : MonoBehaviour
 
         isSomebodyAttacking = isGuardAttacking[0] || isGuardAttacking[1] || isGuardAttacking[2];
 
-        Debug.Log(guardStateManagers[0].currentState.name);
-        Debug.Log(guardStateManagers[1].currentState.name);
-        Debug.Log(guardStateManagers[2].currentState.name);
-
         guards[0].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-5, 0, 0) + playerPosition);
         guards[1].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, -5) + playerPosition);
         guards[2].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, 5) + playerPosition);
 
         if (!isSomebodyAttacking)
         {
-            guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>().player = playerObject.transform;
-            guardStateManagers[nextGuardToAttack].SwitchToNextState(guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>());
-
+            if(guardScripts[nextGuardToAttack].CanAttack())
+            {
+                guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>().player = playerObject.transform;
+                guardStateManagers[nextGuardToAttack].SwitchToNextState(guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>());
+            }
+            
             nextGuardToAttack++;
             nextGuardToAttack %= 3;
         }

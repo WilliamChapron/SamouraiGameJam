@@ -3,17 +3,17 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class GuardScript : MonoBehaviour
+public class GuardScript : EnemyStats
 {
     public NavMeshAgent agent;
-    EnemyStats enemyStats;
-
 
     void Start()
     {
-        enemyStats = GetComponentInParent<EnemyStats>();
+        moveSpeed = 3.0f;
         agent = GetComponent<NavMeshAgent>();
-        agent.speed = enemyStats.moveSpeed;
+        agent.speed = moveSpeed;
+
+        maxAttackCooldown = 5.0f;
     }
 
 }

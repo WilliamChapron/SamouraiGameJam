@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class GuardIdleState : State
 {
-    EnemyStats enemyStats;
     public GuardFormation formation;
     public bool playerInSight;
     public GuardChaseState chaseState;
@@ -17,10 +16,8 @@ public class GuardIdleState : State
 
     void Start()
     {
-        enemyStats = GetComponentInParent<EnemyStats>();
         formationPosition = transform.position;
         guard = GetComponentInParent<GuardScript>();
-        //formation = enemyStats.GetComponentsInParent<GuardFormation>();
     }
 
     public override State RunCurrentState()
