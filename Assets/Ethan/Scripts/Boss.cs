@@ -90,7 +90,7 @@ public class Boss : MonoBehaviour {
                 }
                 break;
             case 1:
-                agent.speed = originalSpeed * 2;
+                agent.speed = originalSpeed * 3;
                 if (agent.remainingDistance < detection.minDistance) {
                     foreach (Collider collider in colliders) {
                         if (collider.tag == detection.tag) agent.SetDestination(collider.gameObject.transform.position);
