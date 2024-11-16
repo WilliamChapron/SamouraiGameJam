@@ -23,27 +23,6 @@ public class HealthComponent : MonoBehaviour
     {
     }
 
-    public void TakeDamage(float damageAmount)
-    {
-        if (isDead)
-        {
-            return;
-        }
-
-        currentHealth -= damageAmount;
-
-
-        Debug.Log($"Player took {damageAmount} damage. Current health: {currentHealth}");
-
-        animator.SetTrigger("TakeHit");
-
-
-        if (currentHealth <= 0f)
-        {
-            Die(); 
-        }
-    }
-
     private void Die()
     {
         if (isDead) return; 

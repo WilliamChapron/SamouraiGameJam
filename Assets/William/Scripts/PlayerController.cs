@@ -284,3 +284,8 @@ public class PlayerController : MonoBehaviour
 // HIT REACTION (react)
 
 // Saut acceleration depart lente et retombe rapide 
+
+// Katana tombe meurt 
+
+
+// MODE KATANA, MODE kunai 
