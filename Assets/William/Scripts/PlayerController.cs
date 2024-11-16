@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+    // Anim
+    private Animator animator;
+
     // Speed
     public float curSpeed = 0f;
     public float walkSpeed = 5f;
@@ -56,13 +59,15 @@ public class PlayerController : MonoBehaviour
 
         originalHeight = characterController.height;
         originalCenter = characterController.center;
+
+        animator = GetComponentInChildren<Animator>();
     }
     #endregion
 
     #region Update Method
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !isRolling)  
+        if (Input.GetKeyDown(KeyCode.LeftControl) && !isRolling && isGrounded)  
         {
             if (lastShiftTime >= 0f && (Time.time - lastShiftTime <= maxShiftDelay))
             {
@@ -73,11 +78,13 @@ public class PlayerController : MonoBehaviour
 
         if (isRolling)
         {
+            // Handle rolling
             HandleRoll();
         }
         else
         {
-            HandleMovement(); 
+            // Handle Rotate, Jump, Sprint
+            HandleMovement();
         }
 
         ApplyGravity();
@@ -86,8 +93,12 @@ public class PlayerController : MonoBehaviour
         currentVelocity.x = velocityXZ.x;
         currentVelocity.z = velocityXZ.z;
         currentVelocity.y = velocityY;
-
         characterController.Move(currentVelocity * Time.deltaTime);
+
+        // Anim
+        animator.SetFloat("speed", curSpeed);
+        animator.SetBool("isRolling", isRolling);
+        //Debug.Log(curSpeed);
     }
     #endregion
 
@@ -112,8 +123,8 @@ public class PlayerController : MonoBehaviour
         // Jump
         if (isGrounded && Input.GetButtonDown("Jump"))
         {
+            animator.SetTrigger("Jump");
             velocityY = Mathf.Sqrt(jumpHeight * -2f * gravity);
-            Debug.Log("Jumping! VelocityY: " + velocityY);
         }
         //
 
@@ -125,12 +136,7 @@ public class PlayerController : MonoBehaviour
         else
         {
             velocityXZ = Vector3.zero;
-        }
-
-        // 
-        if (isRolling)
-        {
-            HandleTranslation(movement);
+            curSpeed = 0f;
         }
     }
     #endregion
@@ -147,7 +153,16 @@ public class PlayerController : MonoBehaviour
     #region Translation Handling
     private void HandleTranslation(Vector3 movement)
     {
-        Vector3 direction = Quaternion.Euler(0f, cameraTransform.eulerAngles.y, 0f) * movement;
+        Vector3 direction;
+
+        if (isRolling)
+        {
+            direction = rollDirection;  
+        }
+        else
+        {
+            direction = Quaternion.Euler(0f, cameraTransform.eulerAngles.y, 0f) * movement;  
+        }
 
         velocityXZ.x = direction.x * curSpeed;
         velocityXZ.z = direction.z * curSpeed;
@@ -176,39 +191,53 @@ public class PlayerController : MonoBehaviour
         isRolling = true;
         rollTime = 0f;
         curSpeed = rollSpeed;  
-        //Debug.Log("Roll Started");
 
         characterController.height = crouchHeight;
         characterController.center = crouchCenter;
+
+        rollDirection = transform.forward;
     }
 
     private void HandleRoll()
     {
-        rollTime += Time.deltaTime;  
+        rollTime += Time.deltaTime;  // Incrément du temps de roulade
 
-
+        // Application de l'accélération pendant la première moitié de la roulade
         if (rollTime < rollDuration / 2f)
         {
-            curSpeed = Mathf.Lerp(rollSpeed, rollSpeed * (1 + rollAcceleration), rollTime / (rollDuration / 2f));
+            float accelerationFactor = Mathf.Lerp(1f, 1 + rollAcceleration, rollTime / (rollDuration / 2f));
+            curSpeed = rollSpeed * accelerationFactor;  // Augmente la vitesse pendant la première moitié
         }
+        // Application de la décélération pendant la seconde moitié de la roulade
         else if (rollTime < rollDuration)
         {
-            curSpeed = Mathf.Lerp(rollSpeed, rollSpeed * (1 - rollDeceleration), (rollTime - (rollDuration / 2f)) / (rollDuration / 2f));
+            float decelerationFactor = Mathf.Lerp(1f, 1 - rollDeceleration, (rollTime - (rollDuration / 2f)) / (rollDuration / 2f));
+            curSpeed = rollSpeed * decelerationFactor;  // Réduit la vitesse pendant la seconde moitié
         }
         else
         {
+            // Fin de la roulade, retour à l'état initial
             isRolling = false;
             curSpeed = walkSpeed;
             characterController.height = originalHeight;
             characterController.center = originalCenter;
             Debug.Log("Roll Ended: RollTime = " + rollTime);
         }
+
+        HandleTranslation(Vector3.forward);
     }
+
 
     #endregion
 }
 
 // #TODO box collide crouch - a tester
 // 2 compétences
+
 // 2 attaque, lourde et légère
 // Intégrer l'animator
+// Contre attaque (1 chance de louper)
+// knockBack 
+// lancer shuriken COMPETENCE 1
+// esquive
+// HIT REACTION (react
