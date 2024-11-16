@@ -4,7 +4,11 @@ using UnityEngine;
 public class Attack : MonoBehaviour
 {
     [Header("General Settings")]
-    public Transform attackPoint; 
+    [SerializeField] Transform attackPoint1;
+    [SerializeField] Transform attackPoint2;
+
+    private Transform curAttackPoint;
+
     public float attackRange = 2f; 
     public LayerMask enemyLayer; 
 
@@ -32,10 +36,23 @@ public class Attack : MonoBehaviour
     private Animator animator;
 
     //State
-    private int attackState = -1;
+    private bool isLightAttacking = false;
+    private bool isComboAttacking = false;
+
+    public bool IsLightAttacking
+    {
+        get { return isLightAttacking; }
+        set { isLightAttacking = value; }
+    }
+    public bool IsComboAttacking
+    {
+        get { return isComboAttacking; }
+        set { isComboAttacking = value; }
+    }
 
     private void Start()
     {
+        curAttackPoint = attackPoint1;
         animator = GetComponentInChildren<Animator>();
         audioSource = GetComponent<AudioSource>();
     }
@@ -44,19 +61,18 @@ public class Attack : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
-            attackState = 0;
+            curAttackPoint = attackPoint1;
             AttackLight(0);
         }
 
         if (Input.GetKeyDown(KeyCode.Mouse1))
         {
-            attackState = 1;
+            curAttackPoint = attackPoint2;
             AttackLight(1);
         }
 
         if (Input.GetKeyDown(KeyCode.R))
         {
-            attackState = 2;
             AttackCombo();
         }
 
@@ -64,21 +80,20 @@ public class Attack : MonoBehaviour
 
     private void AttackLight(int side)
     {
+        if (isLightAttacking)
+        {
+            Debug.LogWarning("Attaque légère déjà en cours !");
+            return;
+        }
+
         if (Time.time >= lastLightAttackTime + lightAttackCooldown)
         {
-
+            isLightAttacking = true;
 
             if (side == 0)
-            {
                 animator.SetTrigger("LightAttackLeft");
-            }
-            if (side == 1)
-            {
+            else if (side == 1)
                 animator.SetTrigger("LightAttackRight");
-            }
-
-            
-
 
             PerformAttack(lightAttackDamage);
             StartCoroutine(EnableComboWindow());
@@ -92,9 +107,15 @@ public class Attack : MonoBehaviour
 
     private void AttackCombo()
     {
+        if (isComboAttacking)
+        {
+            Debug.LogWarning("Combo déjà en cours !");
+            return;
+        }
+
         if (canCombo && Time.time >= lastComboTime + comboCooldown)
         {
-            Debug.Log("Lancement de l'attaque combo !");
+            isComboAttacking = true;
 
             animator.SetTrigger("ComboAttack");
             PerformAttack(comboDamage);
@@ -123,10 +144,13 @@ public class Attack : MonoBehaviour
 
     private void PerformAttack(float damage)
     {
-        Collider[] hitEnemies = Physics.OverlapSphere(attackPoint.position, attackRange, enemyLayer);
+        Collider[] hitEnemies = Physics.OverlapSphere(curAttackPoint.position, attackRange, enemyLayer);
 
         foreach (Collider enemy in hitEnemies)
         {
+            if(enemy.gameObject.tag == "Boss") {
+                enemy.gameObject.GetComponent<Boss>().TakeDammage(5);
+            }
             Debug.Log($"Enemy hit: {enemy.name}");
         }
 
@@ -136,21 +160,21 @@ public class Attack : MonoBehaviour
         }
     }
 
-    private void PlayAttackEffects(string attackType)
-    {
-        if (attackType == "light")
-        {
-            audioSource.PlayOneShot(lightAttackSound);
-            if (lightAttackEffect != null)
-                Instantiate(lightAttackEffect, attackPoint.position, Quaternion.identity);
-        }
-        else if (attackType == "combo")
-        {
-            audioSource.PlayOneShot(comboAttackSound);
-            if (comboAttackEffect != null)
-                Instantiate(comboAttackEffect, attackPoint.position, Quaternion.identity);
-        }
-    }
+    //private void PlayAttackEffects(string attackType)
+    //{
+    //    if (attackType == "light")
+    //    {
+    //        audioSource.PlayOneShot(lightAttackSound);
+    //        if (lightAttackEffect != null)
+    //            Instantiate(lightAttackEffect, attackPoint.position, Quaternion.identity);
+    //    }
+    //    else if (attackType == "combo")
+    //    {
+    //        audioSource.PlayOneShot(comboAttackSound);
+    //        if (comboAttackEffect != null)
+    //            Instantiate(comboAttackEffect, attackPoint.position, Quaternion.identity);
+    //    }
+    //}
 
     //private void CreateDebugTrail(bool isCombo = false)
     //{
