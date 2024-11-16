@@ -486,6 +486,7 @@ GameObject:
   - component: {fileID: 553785681}
   - component: {fileID: 553785680}
   - component: {fileID: 553785682}
+  - component: {fileID: 553785683}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -553,12 +554,12 @@ MonoBehaviour:
   sprintSpeed: 10
   rotationSpeed: 600
   cameraTransform: {fileID: 1831617617}
-  gravity: -3
+  gravity: -15
   jumpHeight: 3
-  accelerationFactor: 2.5
-  decelerationFactor: 0.5
-  fallAccelerationFactor: 4
-  slowTimeDuration: 2
+  accelerationFactor: 0.3
+  decelerationFactor: 0.007
+  fallAccelerationFactor: 1
+  slowTimeDuration: 1.2
   rollSpeed: 10
   rollAcceleration: 1.5
   rollDeceleration: 0.5
@@ -577,7 +578,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6516bff1993de40b21fa197c57e3a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPoint: {fileID: 94854571076415862}
+  attackPoint1: {fileID: 0}
+  attackPoint2: {fileID: 0}
   attackRange: 2
   enemyLayer:
     serializedVersion: 2
@@ -593,6 +595,20 @@ MonoBehaviour:
   debugAttackRangeColor: {r: 1, g: 0, b: 0, a: 1}
   lightAttackSound: {fileID: 0}
   comboAttackSound: {fileID: 0}
+--- !u!114 &553785683
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 553785678}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c05da71d1be48314e819cf644c2be3cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  isDead: 0
 --- !u!1 &647828816
 GameObject:
   m_ObjectHideFlags: 3
