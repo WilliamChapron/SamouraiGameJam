@@ -7,8 +7,6 @@ public class MoveBack : MonoBehaviour
 {
     [SerializeField] int distanceEscape;
     [SerializeField] int distanceAttack;
-    [SerializeField] int cooldownMax;
-    [SerializeField] float cooldown;
 
     public bool isGoBack = true;  
     public bool isChase = false;
@@ -44,10 +42,16 @@ public class MoveBack : MonoBehaviour
     {
         if (isGoBack)
         {
+            agent.isStopped = false;
             agent.SetDestination(destination);
-            if (transform.position == destination)
+            if (!agent.pathPending && agent.remainingDistance <= agent.stoppingDistance)
             {
-                isChase = true;
+                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                {
+                    Debug.Log("L'agent a atteint sa destination.");
+                    isGoBack = false;
+                    isChase = true;
+                }
             }
         }
         else if (isChase)
@@ -65,45 +69,29 @@ public class MoveBack : MonoBehaviour
                 Debug.Log("Transition vers l'attaque.");
             }
         }
-
         else if (isAttack)
         {
             if (!agent.isStopped)
             {
                 agent.isStopped = true;
                 Debug.Log("L'agent s'arrête pour attaquer.");
+                return;
             }
-        }
-
-        else if (isEscape)
-        {
-            Vector3 lookDirection = player.position - transform.position;
-            lookDirection.y = 0; // Gardez l'axe Y constant pour éviter de pencher vers le haut ou le bas
-            transform.rotation = Quaternion.LookRotation(lookDirection);
-
-            Debug.Log("L'ennemi entre en mode fuite.");
-            Escape();
-            cooldown = cooldownMax;
-            isEscape = false;
-        }
-
-        else
-        {
-            transform.LookAt(player);
-        }
-
-        if (cooldown > 0)
-        {
-            cooldown -= Time.deltaTime;
-            if (cooldown <= 0)
+            else
             {
-                Vector3 vector = new Vector3(0.5f, 0f, 0.5f);
+                //agent.isStopped = true;
+                Debug.Log("attack");
+
+                Vector3 vector = new Vector3(3f, 0f, 3f);
                 destination = player.position + vector;
+
                 agent.SetDestination(destination);
 
+
+                isAttack = false;
                 isGoBack = true;
-                agent.SetDestination(player.position);
-                Debug.Log("Le cooldown est terminé, l'ennemi reprend la poursuite.");
+
+                Debug.Log("L'enemi passe par deriere");
             }
         }
     }

@@ -16,13 +16,6 @@ public class AttackBack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (move.isAttack)
-        {
-            Debug.Log("attack");
-            move.isGoBack = false;
-            move.isChase = false;
-            move.isAttack = false;
-            move.isEscape = true;
-        }
+        
     }
 }

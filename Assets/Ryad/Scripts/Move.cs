@@ -8,7 +8,7 @@ public class Move : MonoBehaviour
     [SerializeField] int distanceEscape;
     [SerializeField] int distanceAttack;
     [SerializeField] int cooldownMax;
-    [SerializeField] float cooldown;
+    private float cooldown;
 
     public bool isAttack = false;
     public bool isEscape = false;
@@ -70,7 +70,6 @@ public class Move : MonoBehaviour
             cooldown = cooldownMax;
             isEscape = false;
         }
-
         else
         {
             transform.LookAt(player);
