@@ -30,6 +30,9 @@ public class Boss : MonoBehaviour {
     }
     [SerializeField] Movements movements;
 
+    [Serializable] struct Standard {
+        public float dammage;
+    }
     [Serializable] struct Rain {
         public GameObject projectile;
         public float duration;
@@ -43,21 +46,34 @@ public class Boss : MonoBehaviour {
 
 
     // Privates
+    Animator animator;
     NavMeshAgent agent;
     Vector3 original;
     Vector3 target;
 
     void Start() {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
         original = transform.position;
     }
     float time = 0;
+    bool attack = false;
     void Update() {
         Collider[] colliders = Physics.OverlapSphere(original, detection.range, detection.mask);
+
+        animator.SetBool("Walk", agent.velocity.magnitude != 0);
+        
         switch (state) {
             case 0:
                 foreach (Collider collider in colliders) {
                     if (collider.tag == detection.tag) agent.SetDestination(collider.gameObject.transform.position);
+                }
+
+                if (agent.remainingDistance > detection.minDistance) attack = false;
+
+                if (agent.remainingDistance < detection.minDistance && !attack) {
+                    animator.SetTrigger("Attack1");
+                    attack = true;
                 }
                 break;
             case 1:
