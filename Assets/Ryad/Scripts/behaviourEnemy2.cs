@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class MoveBack : MonoBehaviour
+public class behaviourEnemy2 : MonoBehaviour
 {
     [SerializeField] float distanceEscape;
     [SerializeField] float distanceAttack;
@@ -11,7 +11,7 @@ public class MoveBack : MonoBehaviour
     private float cooldown;
 
     private int nbState = 4;
-    [Range(0,4)][SerializeField] int state = 0;
+    [Range(0, 4)][SerializeField] int state = 0;
 
     public Transform player;
     private NavMeshAgent agent;

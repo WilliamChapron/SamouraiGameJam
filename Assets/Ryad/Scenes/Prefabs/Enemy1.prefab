@@ -138,7 +138,7 @@ Transform:
   m_GameObject: {fileID: 3066445482301523524}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: 0.9995587, z: -0, w: -0.029706648}
-  m_LocalPosition: {x: -2.3575988, y: 0, z: 2.1399658}
+  m_LocalPosition: {x: -3.4, y: 0, z: 2.2}
   m_LocalScale: {x: 1.2, y: 1.8, z: 1.2}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -205,8 +205,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   distanceEscape: 6
   distanceAttack: 3
-  cooldownMax: 3
-  cooldown: 0
+  cooldownMax: 4
   isAttack: 0
   isEscape: 0
   isChase: 1
