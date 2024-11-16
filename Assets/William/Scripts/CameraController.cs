@@ -6,7 +6,7 @@ public class CameraController : MonoBehaviour
 {
     public Transform player;
     public float rotationSpeed = 5f;
-    public Vector3 offset = new Vector3(0f, 2f, -6f);
+    public Vector3 offset = new Vector3(0f, 1.5f, -5f);
 
     private float rotationX = 0f;
     private float rotationY = 0f;
