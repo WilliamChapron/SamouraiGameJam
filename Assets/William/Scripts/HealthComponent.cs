@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class HealthComponent : MonoBehaviour
 {
+    public Animator animator;
+
     [Header("Health Settings")]
     public float maxHealth = 100f; 
     private float currentHealth;   
@@ -13,7 +15,8 @@ public class HealthComponent : MonoBehaviour
 
     private void Start()
     {
-        currentHealth = maxHealth; 
+        currentHealth = maxHealth;
+        animator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -32,6 +35,8 @@ public class HealthComponent : MonoBehaviour
 
         Debug.Log($"Player took {damageAmount} damage. Current health: {currentHealth}");
 
+        animator.SetTrigger("TakeHit");
+
 
         if (currentHealth <= 0f)
         {
@@ -45,7 +50,7 @@ public class HealthComponent : MonoBehaviour
         isDead = true;
 
 
-        //animator.SetTrigger("Die");
+        animator.SetBool("isDead", true);
 
         // Désactiver ou détruire le joueur après la mort
         Destroy(gameObject, 3f); // Détruire le personnage après 3 secondes (ou autre logique de fin)
