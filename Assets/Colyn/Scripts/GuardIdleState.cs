@@ -9,10 +9,9 @@ public class GuardIdleState : State
     public GuardFormation formation;
     public bool playerInSight;
     public GuardChaseState chaseState;
+    GuardScript guard;
 
     Vector3 formationPosition;
-
-    private NavMeshAgent agent;
 
     bool isAttacking = false;
 
@@ -20,14 +19,15 @@ public class GuardIdleState : State
     {
         enemyStats = GetComponentInParent<EnemyStats>();
         formationPosition = transform.position;
+        guard = GetComponentInParent<GuardScript>();
         //formation = enemyStats.GetComponentsInParent<GuardFormation>();
     }
 
     public override State RunCurrentState()
     {
         // Go to formation point.
-        
-        agent.destination = formationPosition;
+
+        guard.agent.destination = formationPosition;
 
         return this;
     }

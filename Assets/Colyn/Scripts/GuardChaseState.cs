@@ -8,16 +8,15 @@ public class GuardChaseState : State
     public bool playerInAttackRange;
     public GuardAttackState attackState;
 
+    GuardScript guard;
+
     public Transform player;
-    private NavMeshAgent agent;
+    
     EnemyStats enemyStats;
 
     void Start()
     {
-        enemyStats = GetComponentInParent<EnemyStats>();
-        
-        agent = GetComponent<NavMeshAgent>();
-        agent.speed = enemyStats.moveSpeed;
+        guard = GetComponentInParent<GuardScript>();
     }
 
     public override State RunCurrentState()
@@ -27,7 +26,7 @@ public class GuardChaseState : State
             return attackState;
         }
 
-        agent.destination = player.position;
+        guard.agent.destination = player.position;
 
         return this;
     }

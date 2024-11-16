@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GuardFormation : MonoBehaviour
 {
-    public bool isNobodyAttacking;
+    public bool isSomebodyAttacking;
 
     public GameObject guardPrefab;
 
@@ -35,18 +35,23 @@ public class GuardFormation : MonoBehaviour
     {
         Vector3 playerPosition = playerObject.transform.position;
 
-        isGuardAttacking[0] = guardStateManagers[0].currentState.name == "AttackState";
-        isGuardAttacking[1] = guardStateManagers[1].currentState.name == "AttackState";
-        isGuardAttacking[2] = guardStateManagers[2].currentState.name == "AttackState";
+        isGuardAttacking[0] = guardStateManagers[0].currentState.name == "ChaseState";
+        isGuardAttacking[1] = guardStateManagers[1].currentState.name == "ChaseState";
+        isGuardAttacking[2] = guardStateManagers[2].currentState.name == "ChaseState";
 
-        isNobodyAttacking = isGuardAttacking[0] || isGuardAttacking[1] || isGuardAttacking[2];
+        isSomebodyAttacking = isGuardAttacking[0] || isGuardAttacking[1] || isGuardAttacking[2];
+
+        Debug.Log(guardStateManagers[0].currentState.name);
+        Debug.Log(guardStateManagers[1].currentState.name);
+        Debug.Log(guardStateManagers[2].currentState.name);
 
         guards[0].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-5, 0, 0) + playerPosition);
         guards[1].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, -5) + playerPosition);
         guards[2].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, 5) + playerPosition);
 
-        if (isNobodyAttacking)
+        if (!isSomebodyAttacking)
         {
+            guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>().player = playerObject.transform;
             guardStateManagers[nextGuardToAttack].SwitchToNextState(guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>());
 
             nextGuardToAttack++;
