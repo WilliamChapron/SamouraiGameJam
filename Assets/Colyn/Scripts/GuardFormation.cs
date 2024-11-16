@@ -20,6 +20,10 @@ public class GuardFormation : MonoBehaviour
 
     GameObject playerObject;
 
+    float maxTimeUntilNextAttack = 2.0f;
+
+    float timeUntilNextAttack = 2.0f;
+
     void Start()
     {
         guards[0] = Instantiate(guardPrefab, transform.position + new Vector3(-5, 0, 0), transform.rotation, transform);
@@ -51,18 +55,30 @@ public class GuardFormation : MonoBehaviour
         guards[1].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, -5) + playerPosition);
         guards[2].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, 5) + playerPosition);
 
+        
+
         // To do: Add more time between attacks
         if (!isSomebodyAttacking) 
         {
-            if(guardScripts[nextGuardToAttack].CanAttack())
+            timeUntilNextAttack -= Time.deltaTime;
+
+            if (timeUntilNextAttack <= 0)
             {
-                guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>().player = playerObject.transform;
-                guardStateManagers[nextGuardToAttack].SwitchToNextState(guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>());
+
+                if (guardScripts[nextGuardToAttack].CanAttack())
+                {
+                    guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>().player = playerObject.transform;
+                    guardStateManagers[nextGuardToAttack].SwitchToNextState(guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>());
+
+                    Debug.Log("Attack ran");
+
+                    timeUntilNextAttack = maxTimeUntilNextAttack;
+                }
+
+                Debug.Log("Changes attacker");
+                nextGuardToAttack++;
+                nextGuardToAttack %= 3;
             }
-            
-            nextGuardToAttack++;
-            nextGuardToAttack %= 3;
         }
     }
-
 }

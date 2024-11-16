@@ -12,8 +12,6 @@ public class GuardIdleState : State
 
     Vector3 formationPosition;
 
-    bool isAttacking = false;
-
     void Start()
     {
         formationPosition = transform.position;
@@ -22,8 +20,6 @@ public class GuardIdleState : State
 
     public override State RunCurrentState()
     {
-        // Go to formation point.
-
         guard.agent.destination = formationPosition;
 
         return this;

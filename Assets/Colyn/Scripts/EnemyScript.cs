@@ -31,7 +31,7 @@ public class EnemyScript : MonoBehaviour
         agent.speed = moveSpeed;
     }
 
-    private void Update()
+    public virtual void Update()
     {
         attackCooldown -= Time.deltaTime;
     }

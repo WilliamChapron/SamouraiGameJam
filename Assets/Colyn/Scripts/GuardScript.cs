@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 public class GuardScript : EnemyScript
 {
-    float rotationToX;
     float rotationToY;
 
     public override void Start()
@@ -17,13 +16,13 @@ public class GuardScript : EnemyScript
         base.Start();
     }
 
-    private void Update()
+    public override void Update()
     {
+        base.Update();
+
         // Turn to player
+        transform.LookAt(playerTransform);
 
-        rotationToX = Quaternion.FromToRotation(transform.position, playerTransform.position).x;
-        rotationToY = Quaternion.FromToRotation(transform.position, playerTransform.position).y;
-        //transform.rotation.x = Mathf.LerpAngle(rotationToX, transform.rotation.x, 0.1f);
+        //transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
     }
-
 }
