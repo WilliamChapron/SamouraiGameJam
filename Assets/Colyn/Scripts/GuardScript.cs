@@ -9,7 +9,7 @@ public class GuardScript : EnemyScript
 
     public override void Start()
     {
-        moveSpeed = 3.0f;
+        moveSpeed = 2.0f;
 
         maxAttackCooldown = 5.0f;
 
@@ -21,7 +21,11 @@ public class GuardScript : EnemyScript
         base.Update();
 
         // Turn to player
-        transform.LookAt(playerTransform);
+        //transform.LookAt(playerTransform);
+
+        Vector3 lookDirection = playerTransform.position - transform.position;
+        lookDirection.y = 0; // Gardez l'axe Y constant pour éviter de pencher vers le haut ou le bas
+        transform.rotation = Quaternion.LookRotation(lookDirection);
 
         //transform.rotation = Quaternion.Euler(0, transform.rotation.y, 0);
     }

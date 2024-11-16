@@ -2,23 +2,21 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SuzanooAttackState : State
+public class SusanooAttackState : State
 {
-    EnemyScript enemyStats;
-    SuzanooAttackRechargeState attackRechargeState;
+    SusanooScript susanooScript;
+    public SusanooAttackRechargeState attackRechargeState;
 
     void Start()
     {
-        enemyStats = GetComponentInParent<EnemyScript>();
+        susanooScript = GetComponentInParent<SusanooScript>();
     }
 
     public override State RunCurrentState()
     {
         // Attack
         Debug.Log("Attacks");
-        enemyStats.Attack();
-
-
+        susanooScript.Attack();
 
         return attackRechargeState;
     }
