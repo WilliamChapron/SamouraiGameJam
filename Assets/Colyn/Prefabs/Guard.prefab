@@ -213,6 +213,51 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerCollides: 0
+--- !u!1 &4431423827194345969
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 835563730851184333}
+  - component: {fileID: 7407911968109875488}
+  m_Layer: 6
+  m_Name: KnockbackState
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &835563730851184333
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4431423827194345969}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 898958029993621102}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7407911968109875488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4431423827194345969}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d50b70c73d3f2884da689d2d6dd68de8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  idleState: {fileID: 3130885170545284967}
 --- !u!1 &7395779182884107900
 GameObject:
   m_ObjectHideFlags: 0
@@ -385,6 +430,7 @@ Transform:
   - {fileID: 7845499521199780742}
   - {fileID: 4694862684410165788}
   - {fileID: 4891991104230787121}
+  - {fileID: 835563730851184333}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &1808603839586784260
@@ -517,3 +563,7 @@ MonoBehaviour:
   moveSpeed: 0
   agent: {fileID: 0}
   playerTransform: {fileID: 0}
+  knockbackAmount: 0
+  timeUntilKnockbackReset: 100
+  knockbackState: {fileID: 7407911968109875488}
+  stateManager: {fileID: 0}

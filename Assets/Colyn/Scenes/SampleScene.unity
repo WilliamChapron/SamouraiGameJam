@@ -1097,7 +1097,9 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 192272691}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 5125715343097499893, guid: 38e8c597cf65e474b84b02e785a43dbd, type: 3}
+    - {fileID: 7670752576305215464, guid: 38e8c597cf65e474b84b02e785a43dbd, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
@@ -2006,7 +2008,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &1867637397
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2027,6 +2029,9 @@ MonoBehaviour:
   moveSpeed: 0
   agent: {fileID: 0}
   playerTransform: {fileID: 0}
+  knockbackAmount: 0
+  knockbackState: {fileID: 0}
+  stateManager: {fileID: 0}
 --- !u!136 &1867637398
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -2254,7 +2259,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2133534731
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -24,6 +24,16 @@ public class GuardFormation : MonoBehaviour
 
     float timeUntilNextAttack = 2.0f;
 
+    float maxTimeUntilNextOffset = 1.5f;
+
+    float timeUntilNextOffset = 1.5f;
+
+    float maxRandomTimeUntilNextOffset = 1f;
+
+    Vector3[] randomGuardOffset = new Vector3[3];
+
+    float randomOffsetRange = 0.8f;
+
     void Start()
     {
         guards[0] = Instantiate(guardPrefab, transform.position + new Vector3(-5, 0, 0), transform.rotation, transform);
@@ -51,31 +61,35 @@ public class GuardFormation : MonoBehaviour
 
         isSomebodyAttacking = isGuardAttacking[0] || isGuardAttacking[1] || isGuardAttacking[2];
 
-        guards[0].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-5, 0, 0) + playerPosition);
-        guards[1].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, -5) + playerPosition);
-        guards[2].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, 5) + playerPosition);
+        timeUntilNextOffset -= Time.deltaTime;
 
-        
+        if (timeUntilNextOffset <= 0)
+        {
+            timeUntilNextOffset = maxTimeUntilNextOffset;
+            randomGuardOffset[0] = new Vector3(Random.Range(-randomOffsetRange, randomOffsetRange), 0, Random.Range(-randomOffsetRange, randomOffsetRange));
+            randomGuardOffset[1] = new Vector3(Random.Range(-randomOffsetRange, randomOffsetRange), 0, Random.Range(-randomOffsetRange, randomOffsetRange));
+            randomGuardOffset[2] = new Vector3(Random.Range(-randomOffsetRange, randomOffsetRange), 0, Random.Range(-randomOffsetRange, randomOffsetRange));
+        }
 
-        // To do: Add more time between attacks
+        guards[0].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-5, 0, 0) + playerPosition + randomGuardOffset[0]);
+        guards[1].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, -5) + playerPosition + randomGuardOffset[1]);
+        guards[2].GetComponentInChildren<GuardIdleState>().SetFormationPosition(new Vector3(-2, 0, 5) + playerPosition + randomGuardOffset[2]);
+
         if (!isSomebodyAttacking) 
         {
             timeUntilNextAttack -= Time.deltaTime;
 
             if (timeUntilNextAttack <= 0)
             {
-
                 if (guardScripts[nextGuardToAttack].CanAttack())
                 {
+                    //guardScripts[nextGuardToAttack].TakeHit();
+
                     guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>().player = playerObject.transform;
                     guardStateManagers[nextGuardToAttack].SwitchToNextState(guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>());
-
-                    Debug.Log("Attack ran");
-
-                    timeUntilNextAttack = maxTimeUntilNextAttack;
+                    
+                    timeUntilNextAttack = maxTimeUntilNextAttack + Random.Range(0, maxRandomTimeUntilNextOffset);
                 }
-
-                Debug.Log("Changes attacker");
                 nextGuardToAttack++;
                 nextGuardToAttack %= 3;
             }

@@ -36,6 +36,25 @@ public class EnemyScript : MonoBehaviour
         attackCooldown -= Time.deltaTime;
     }
 
+    public bool IsDead()
+    {
+        return currentHealth <= 0;
+    }
+
+    public virtual void TakeHit(int damage)
+    {
+        currentHealth -= damage;
+
+        if(IsDead())
+        {
+
+
+            // Play death anim
+        }
+    }
+
+
+
     void SetAttackCooldown()
     {
         attackCooldown = maxAttackCooldown;
