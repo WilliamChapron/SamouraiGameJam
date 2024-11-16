@@ -27,6 +27,7 @@ public class PlayerController : MonoBehaviour
     public float gravity = -9.81f;
     public float jumpHeight = 2f;
     private bool isGrounded;
+    private bool isJumping;
 
     // Roll
     public float rollSpeed = 15f;  // La vitesse initiale de la roulade
@@ -125,6 +126,7 @@ public class PlayerController : MonoBehaviour
         {
             animator.SetTrigger("Jump");
             velocityY = Mathf.Sqrt(jumpHeight * -2f * gravity);
+            isJumping = true;
         }
         //
 
@@ -180,7 +182,13 @@ public class PlayerController : MonoBehaviour
         }
         else if (isGrounded && velocityY < 0)
         {
-            velocityY = -2f; 
+            velocityY = -2f;
+            if (isJumping)
+            {
+                animator.SetTrigger("ExitJump");
+                isJumping = false;
+            }
+            
         }
     }
     #endregion
