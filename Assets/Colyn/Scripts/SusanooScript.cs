@@ -23,17 +23,17 @@ public class SusanooScript : EnemyScript
         base.Start();
     }
 
-    public override void TakeHit(int damage)
-    {
-        timeUntilKnockbackReset = maxTimeUntilKnockbackReset;
+    //public override void TakeHit(int damage)
+    //{
+    //    timeUntilKnockbackReset = maxTimeUntilKnockbackReset;
 
-        knockbackAmount++;
+    //    knockbackAmount++;
 
-        knockbackState.SetKnockbackTime();
-        stateManager.SwitchToNextState(knockbackState);
+    //    knockbackState.SetKnockbackTime();
+    //    stateManager.SwitchToNextState(knockbackState);
 
-        base.TakeHit(damage);
-    }
+    //    base.TakeHit(damage);
+    //}
 
     public override void Update()
     {

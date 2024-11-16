@@ -18,7 +18,6 @@ public class GuardAttackState : State
     public override State RunCurrentState()
     {
         // Attack
-        Debug.Log("Attacks");
         enemyStats.Attack();
 
         attackTime -= Time.deltaTime;

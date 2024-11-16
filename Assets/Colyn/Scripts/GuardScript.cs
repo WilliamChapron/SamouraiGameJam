@@ -14,9 +14,6 @@ public class GuardScript : EnemyScript
     public GuardKnockbackState knockbackState;
     public StateManager stateManager;
 
-    int VelocityXHash;
-    int VelocityZHash;
-
     public override void Start()
     {
         stateManager = GetComponent<StateManager>();
@@ -25,13 +22,10 @@ public class GuardScript : EnemyScript
 
         maxAttackCooldown = 5.0f;
 
-        VelocityXHash = Animator.StringToHash("VelocityX");
-        VelocityZHash = Animator.StringToHash("VelocityZ");
-
         base.Start();
     }
 
-    public override void TakeHit(int damage)
+    public override void TakeDamage(int damage)
     {
         timeUntilKnockbackReset = maxTimeUntilKnockbackReset;
 
@@ -40,7 +34,9 @@ public class GuardScript : EnemyScript
         knockbackState.SetKnockbackTime();
         stateManager.SwitchToNextState(knockbackState);
 
-        base.TakeHit(damage);
+
+
+        base.TakeDamage(damage);
     }
 
     public override void Update()
@@ -67,10 +63,8 @@ public class GuardScript : EnemyScript
         // Map 'worldDeltaPosition' to local space
         float dx = Vector3.Dot(transform.right, worldDeltaPosition);
         float dy = Vector3.Dot(transform.forward, worldDeltaPosition);
-        Vector2 deltaPosition = new Vector2(dx, dy);
 
-        Vector3 walkVector = (transform.position - agent.destination);
-        animator.SetFloat(VelocityXHash, dx);
-        animator.SetFloat(VelocityZHash, dy);
+        animator.SetFloat("VelocityX", dx);
+        animator.SetFloat("VelocityZ", dy);
     }
 }

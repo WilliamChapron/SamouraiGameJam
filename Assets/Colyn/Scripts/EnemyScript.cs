@@ -9,8 +9,6 @@ public class EnemyScript : MonoBehaviour
 
     public float maxAttackCooldown;
     public float attackCooldown = 0;
-    int maxHealth;
-    public int currentHealth;
 
     public int damage;
     public float moveSpeed;
@@ -21,6 +19,8 @@ public class EnemyScript : MonoBehaviour
     public Transform playerTransform;
 
     protected Animator animator;
+
+    HealthComponent healthComponent;
 
     public virtual void Start()
     {
@@ -40,24 +40,11 @@ public class EnemyScript : MonoBehaviour
         attackCooldown -= Time.deltaTime;
     }
 
-    public bool IsDead()
+    public virtual void TakeDamage(int damage)
     {
-        return currentHealth <= 0;
+        animator.Play("HitReaction");
+        healthComponent.TakeDamage(damage);
     }
-
-    public virtual void TakeHit(int damage)
-    {
-        currentHealth -= damage;
-
-        if(IsDead())
-        {
-
-
-            // Play death anim
-        }
-    }
-
-
 
     void SetAttackCooldown()
     {
