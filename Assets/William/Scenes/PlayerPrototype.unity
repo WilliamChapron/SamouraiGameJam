@@ -527,7 +527,7 @@ MonoBehaviour:
   rollSpeed: 10
   rollAcceleration: 1.5
   rollDeceleration: 0.5
-  rollDuration: 1.3
+  rollDuration: 1
   crouchHeight: 1
   crouchCenter: {x: 0, y: 0.5, z: 0}
 --- !u!114 &553785682
@@ -2697,7 +2697,7 @@ Animator:
   m_Controller: {fileID: 9100000, guid: 5b866d7d5be6d9746a596c0ec336d0dc, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_AnimatePhysics: 0

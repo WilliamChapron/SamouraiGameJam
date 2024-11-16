@@ -97,7 +97,7 @@ public class PlayerController : MonoBehaviour
         characterController.Move(currentVelocity * Time.deltaTime);
 
         // Anim
-        animator.SetFloat("speed", curSpeed);
+        animator.SetFloat("speed", Mathf.SmoothStep(animator.GetFloat("speed"), curSpeed, Time.deltaTime * 21));
         animator.SetBool("isRolling", isRolling);
         //Debug.Log(curSpeed);
     }
@@ -196,6 +196,7 @@ public class PlayerController : MonoBehaviour
     #region Roll Handling
     private void StartRoll()
     {
+        animator.applyRootMotion = false;
         isRolling = true;
         rollTime = 0f;
         curSpeed = rollSpeed;  
@@ -230,6 +231,7 @@ public class PlayerController : MonoBehaviour
             characterController.height = originalHeight;
             characterController.center = originalCenter;
             Debug.Log("Roll Ended: RollTime = " + rollTime);
+            animator.applyRootMotion = true;
         }
 
         HandleTranslation(Vector3.forward);
