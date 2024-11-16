@@ -1,11 +1,14 @@
 using System;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 public class Boss : MonoBehaviour {
 
     [Header("Setup")]
     [SerializeField] new string name = "BOSS";
+
+    [SerializeField] Slider slider;
 
     [Range(0, 3)]
     [SerializeField] int state = 0;
@@ -65,6 +68,8 @@ public class Boss : MonoBehaviour {
     float time = 0;
 
     void Update() {
+        slider.value = health / stats.health;
+
         Collider[] colliders = Physics.OverlapSphere(original, detection.range, detection.mask);
 
         animator.SetBool("Walk", agent.velocity.magnitude != 0 && agent.speed == originalSpeed);
