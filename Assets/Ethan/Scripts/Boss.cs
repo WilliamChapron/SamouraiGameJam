@@ -128,9 +128,17 @@ public class Boss : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    public void TakeDammage(float ammount) {
-        if (health > 0) { health -= ammount; }
-        else { Die(); }
+    public void TakeDammage(float amount)
+    {
+        if (health > 0)
+        {
+            health -= amount;
+            Debug.Log("Boss Health: " + health); 
+        }
+        else
+        {
+            Die();
+        }
     }
 
     private void OnDrawGizmos() {
