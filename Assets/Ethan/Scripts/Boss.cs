@@ -109,8 +109,10 @@ public class Boss : MonoBehaviour {
                 }
                 break;
             case 1:
+
+                NavMeshHit hit;
                 agent.speed = originalSpeed * 3;
-                if (agent.remainingDistance < detection.minDistance) {
+                if (agent.remainingDistance < detection.minDistance || !NavMesh.SamplePosition(agent.destination, out hit, detection.range, NavMesh.AllAreas)) {
                     foreach (Collider collider in colliders) {
                         if (collider.tag == detection.tag) agent.SetDestination(collider.gameObject.transform.position);
                     }
