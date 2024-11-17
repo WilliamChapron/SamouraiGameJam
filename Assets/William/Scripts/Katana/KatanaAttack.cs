@@ -23,16 +23,28 @@ public class KatanaAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+
+        //Debug.Log(isAttackActive);
+        if (other.CompareTag("Boss"))
+        {
+
+        }
+
         if (isAttackActive && other.CompareTag("Boss"))
         {
-            //Debug.Log("On trigger");
-            Boss boss = other.GetComponent<Boss>();
-            if (boss != null)
+            Debug.Log("TRIGGER HIPS");
+            Debug.Log(other.gameObject.name);
+            Debug.Log(gameObject.name);
+
+            BodyPartTest part = other.GetComponent<BodyPartTest>();
+            
+            if (part != null)
             {
                 Debug.Log("Katana hit Boss : " + other.gameObject.name + " Hit Number: " + hitNbr);
-                boss.TakeDammage(damage);
+                part.TakeDamage(damage);
                 hitNbr += 1;
             }
+
         }
         if (isAttackActive && other.CompareTag("Enemy"))
         {
