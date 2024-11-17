@@ -6,15 +6,15 @@ public class KatanaAttack : MonoBehaviour
 {
     public float damage = 10f;
     public bool isAttackActive = false;
+
+    public bool isAttackON = false;
     public int hitNbr = 0;
 
     public void StartAttack()
     {
         isAttackActive = true;
-        //Debug.Log("Katana attack activated.");
     }
 
-    // Appelée pour arrêter l'attaque
     public void StopAttack()
     {
         isAttackActive = false;
@@ -22,13 +22,14 @@ public class KatanaAttack : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
+        //Debug.Log(gameObject.name);
+        //Debug.Log(isAttackON);
 
-
-        if (isAttackActive && other.CompareTag("Boss"))
+        if (isAttackON && other.CompareTag("Boss"))
         {
-            Debug.Log("TRIGGER HIPS");
-            Debug.Log(other.gameObject.name);
-            Debug.Log(gameObject.name);
+            //Debug.Log("TRIGGER HIPS");
+            //Debug.Log(other.gameObject.name);
+            //Debug.Log(gameObject.name);
 
             BodyPartTest part = other.GetComponent<BodyPartTest>();
             
@@ -40,7 +41,7 @@ public class KatanaAttack : MonoBehaviour
             }
 
         }
-        if (isAttackActive && other.CompareTag("Enemy"))
+        if (isAttackON && other.CompareTag("Enemy"))
         {
             Debug.Log("Coup a l'enemy");
             Debug.Log(other.gameObject.name);
