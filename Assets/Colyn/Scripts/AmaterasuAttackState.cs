@@ -18,7 +18,7 @@ public class AmaterasuAttackState : State
 
         // One big hit into 2-3 seconds of Attack Recharge State
 
-        amaterasu.Attack();
+        amaterasu.PlayAttack();
 
         return rechargeState;
     }

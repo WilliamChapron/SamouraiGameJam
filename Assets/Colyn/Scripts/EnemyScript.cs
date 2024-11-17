@@ -5,22 +5,24 @@ using UnityEngine.AI;
 
 public class EnemyScript : MonoBehaviour
 {
+    
     public AttackCollider attackCollider;
+    protected CapsuleCollider playerCollider;
 
     public float maxAttackCooldown;
     public float attackCooldown = 0;
-    int maxHealth;
-    public int currentHealth;
 
-    public int damage;
+    public float damage;
     public float moveSpeed;
 
     public NavMeshAgent agent;
 
-    GameObject playerObject;
+    protected GameObject playerObject;
     public Transform playerTransform;
 
     protected Animator animator;
+
+    public HealthEnemiesComponent healthComponent;
 
     public virtual void Start()
     {
@@ -29,7 +31,9 @@ public class EnemyScript : MonoBehaviour
         playerObject = GameObject.Find("Player");
         playerTransform = playerObject.transform;
 
+        healthComponent = GetComponent<HealthEnemiesComponent>();
         attackCollider = GetComponentInChildren<AttackCollider>();
+        playerCollider = playerObject.GetComponent<CapsuleCollider>();
 
         agent = GetComponent<NavMeshAgent>();
         agent.speed = moveSpeed;
@@ -40,26 +44,14 @@ public class EnemyScript : MonoBehaviour
         attackCooldown -= Time.deltaTime;
     }
 
-    public bool IsDead()
+    public virtual void TakeDamage(int damage)
     {
-        return currentHealth <= 0;
+        Debug.Log("Has been hit");
+        animator.SetTrigger("Hit");
+        healthComponent.TakeDamage(damage);
     }
 
-    public virtual void TakeHit(int damage)
-    {
-        currentHealth -= damage;
-
-        if(IsDead())
-        {
-
-
-            // Play death anim
-        }
-    }
-
-
-
-    void SetAttackCooldown()
+    public void SetAttackCooldown()
     {
         attackCooldown = maxAttackCooldown;
     }
@@ -69,21 +61,11 @@ public class EnemyScript : MonoBehaviour
         return attackCooldown <= 0.0f;
     }
 
-    public void Attack()
+    public void PlayAttack()
     {
         // Play attack animation
 
         animator.Play("Attack");
-
-        // Run this in animation
-
-        // If collision with attack hitbox, deal damage
-        if (attackCollider.playerCollides)
-        {
-            //Player.TakeDamage(damage);
-        }
-        
-        // Run this here
 
         SetAttackCooldown();
     }

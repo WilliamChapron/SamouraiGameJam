@@ -120,6 +120,7 @@ public class Attack : MonoBehaviour
             {
                 animator.SetTrigger("LightAttackLeft");
                 katana1.StartAttack();
+                katana1.isAttackON = true;
             }
                 
 
@@ -127,6 +128,7 @@ public class Attack : MonoBehaviour
             {
                 animator.SetTrigger("LightAttackRight");
                 katana2.StartAttack();
+                katana2.isAttackON = true;
             }
                 
 
@@ -144,6 +146,8 @@ public class Attack : MonoBehaviour
     {
         if (isComboAttacking)
         {
+            //katana1.isAttackON = true;
+            //katana2.isAttackON = true;
             //Debug.LogWarning("Combo déjà en cours !");
             return;
         }
@@ -154,8 +158,13 @@ public class Attack : MonoBehaviour
 
             animator.SetTrigger("ComboAttack");
 
+
+            //Debug.Log("Active 2 Katana");
             katana1.StartAttack();
             katana2.StartAttack();
+
+            katana1.isAttackON = true;
+            katana2.isAttackON = true;
 
             lastComboTime = Time.time;
             canCombo = false;
