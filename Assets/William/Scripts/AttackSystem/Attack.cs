@@ -190,8 +190,16 @@ public class Attack : MonoBehaviour
 
         foreach (Collider enemy in hitEnemies)
         {
-            if(enemy.gameObject.tag == "Boss") {
+            Debug.Log(enemy);
+
+            if (enemy.gameObject.tag == "Boss") {
                 enemy.gameObject.GetComponent<Boss>().TakeDammage(5);
+            }
+
+            if (enemy.gameObject.tag == "Enemy") // 31: Enemy
+            {
+                Debug.Log("Found enemy");
+                enemy.gameObject.GetComponent<EnemyScript>().TakeDamage(5);
             }
         }
 
@@ -210,17 +218,20 @@ public class Attack : MonoBehaviour
 
         GameObject kunai = Instantiate(kunaiPrefab, kunaiSpawnPoint.position, kunaiSpawnPoint.rotation);
 
- 
+
         Rigidbody rb = kunai.GetComponent<Rigidbody>();
         if (rb == null)
         {
-            rb = kunai.AddComponent<Rigidbody>(); 
+            rb = kunai.AddComponent<Rigidbody>();
         }
 
-        rb.isKinematic = false; 
-        rb.useGravity = false;  
+        Vector3 currentScale = kunai.transform.localScale;
+        kunai.transform.localScale = new Vector3(currentScale.x * 10, currentScale.y * 10, currentScale.z * 10);
 
-        rb.velocity = gameObject.gameObject * kunaiSpeed;
+        rb.isKinematic = false;
+        rb.useGravity = false;
+
+        rb.velocity = transform.forward * kunaiSpeed;
 
         Destroy(kunai, kunaiLifetime);
     }

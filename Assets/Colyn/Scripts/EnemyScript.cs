@@ -29,6 +29,7 @@ public class EnemyScript : MonoBehaviour
         playerObject = GameObject.Find("Player");
         playerTransform = playerObject.transform;
 
+        healthComponent = GetComponent<HealthComponent>();
         attackCollider = GetComponentInChildren<AttackCollider>();
 
         agent = GetComponent<NavMeshAgent>();
@@ -42,7 +43,8 @@ public class EnemyScript : MonoBehaviour
 
     public virtual void TakeDamage(int damage)
     {
-        animator.Play("HitReaction");
+        Debug.Log("Has been hit");
+        animator.SetTrigger("Hit");
         healthComponent.TakeDamage(damage);
     }
 
