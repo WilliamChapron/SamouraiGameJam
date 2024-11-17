@@ -10,18 +10,20 @@ public class BehaviourEnemy1 : MonoBehaviour
     [SerializeField] int cooldownMax;
     private float cooldown;
 
-    private int nbState = 5;
-    [Range(0, 4)][SerializeField] int state = 0;
+    private int nbState = 4;
+    [Range(0, 3)][SerializeField] int state = 0;
 
     public Transform player;
     private NavMeshAgent agent;
     private Animator animator;
+    private AttackEnemies attackEnemy;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
         agent.SetDestination(player.position);
         animator = GetComponentInChildren<Animator>();
+        attackEnemy = GetComponent<AttackEnemies>();
     }
 
 
@@ -39,35 +41,28 @@ public class BehaviourEnemy1 : MonoBehaviour
     {
         switch (state)
         {
-            case 0:
+            case 0: // chase
                 agent.SetDestination(player.position);
                 if (agent.remainingDistance <= distanceAttack)
                 {
                     state = (state + 1) % nbState;
                 }
                 break;
-            case 1:
-                agent.SetDestination(player.position);
-
-                if (agent.remainingDistance <= distanceAttack)
-                {
-                    state = (state + 1) % nbState;
-                }
-                break;
-            case 2:
+            case 1: // attack
                 if (!agent.isStopped)
                 {
                     agent.isStopped = true;
                 }
 
                 Debug.Log("attack");
+                attackEnemy.Attack();
                 animator.Play("Attack");
 
                 state = (state + 1) % nbState;
                 break;
-            case 3:
+            case 2: // escape
                 Vector3 lookDirection = player.position - transform.position;
-                lookDirection.y = 0; // Gardez l'axe Y constant pour éviter de pencher vers le haut ou le bas
+                lookDirection.y = 0;
                 transform.rotation = Quaternion.LookRotation(lookDirection);
 
                 Debug.Log("L'ennemi entre en mode fuite.");
@@ -75,7 +70,7 @@ public class BehaviourEnemy1 : MonoBehaviour
                 cooldown = cooldownMax;
                 state = (state + 1) % nbState;
                 break;
-            case 4:
+            case 3: // wait
                 if (cooldown > 0)
                 {
                     cooldown -= Time.deltaTime;

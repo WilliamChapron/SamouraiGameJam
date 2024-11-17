@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class HealthComponent : MonoBehaviour
+public class HealthEnemiesComponent : MonoBehaviour
 {
 
     private Animator animator;
@@ -19,6 +19,7 @@ public class HealthComponent : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
+
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -56,17 +57,6 @@ public class HealthComponent : MonoBehaviour
 
         animator.SetTrigger("Die");
 
-        // Désactiver ou détruire le joueur après la mort
-        //Destroy(gameObject, 3f); // Détruire le personnage après 3 secondes (ou autre logique de fin)
+        Destroy(gameObject, 3f); // Détruire le personnage après 3 secondes (ou autre logique de fin)
     }
-
-    //public void Heal(float healAmount)
-    //{
-    //    if (isDead) return; 
-
-    //    currentHealth += healAmount;
-    //    if (currentHealth > maxHealth) currentHealth = maxHealth; 
-
-    //    Debug.Log($"Player healed by {healAmount}. Current health: {currentHealth}");
-    //}
 }

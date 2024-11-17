@@ -14,6 +14,7 @@ public class behaviourEnemy2 : MonoBehaviour
     public Transform player;
     private NavMeshAgent agent;
     private Animator animator;
+    private AttackEnemies attackEnemy;
 
     private Vector3 destination;
 
@@ -23,6 +24,7 @@ public class behaviourEnemy2 : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
+        attackEnemy = GetComponent<AttackEnemies>();
         // Calcul initial de la position à droite du joueur
         SetRightPositionAsDestination();
     }
@@ -60,6 +62,7 @@ public class behaviourEnemy2 : MonoBehaviour
                 animator.Play("Attack");
                 
                 Debug.Log("Attack");
+                attackEnemy.Attack();
                 SetRightPositionAsDestination();
                 agent.SetDestination(destination);
 

@@ -220,7 +220,7 @@ public class Attack : MonoBehaviour
         rb.isKinematic = false; 
         rb.useGravity = false;  
 
-        rb.velocity = gameObject.gameObject * kunaiSpeed;
+        rb.velocity = transform.forward * kunaiSpeed;
 
         Destroy(kunai, kunaiLifetime);
     }
