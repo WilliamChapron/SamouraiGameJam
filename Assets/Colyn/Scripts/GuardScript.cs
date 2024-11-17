@@ -10,7 +10,6 @@ public class GuardScript : EnemyScript
     [SerializeField] float attackDuration = 1f; // Durée de l'attaque en secondes
 
     private BoxCollider katanaCollider;
-    private CapsuleCollider playerCollider;
 
     private float attackTimer = 0f; // Timer pour suivre le temps d'attaque
     private bool isAttacking = false; // Indique si l'attaque est en cours
@@ -37,7 +36,6 @@ public class GuardScript : EnemyScript
         base.Start();
 
         katanaCollider = katana.GetComponent<BoxCollider>();
-        playerCollider = playerObject.GetComponent<CapsuleCollider>();
 
         healthComponent.maxHealth = 50.0f;
     }
