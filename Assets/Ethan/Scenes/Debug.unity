@@ -50851,6 +50851,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   isAttackActive: 0
+  isAttackON: 0
   hitNbr: 0
 --- !u!65 &906547845
 BoxCollider:
@@ -99206,6 +99207,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   isAttackActive: 0
+  isAttackON: 0
   hitNbr: 0
 --- !u!65 &1977417340
 BoxCollider:
