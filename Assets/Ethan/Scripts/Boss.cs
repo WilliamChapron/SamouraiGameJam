@@ -16,7 +16,7 @@ public class Boss : MonoBehaviour {
     float health;
 
     [Serializable] struct Stats {
-        [Range(0, 100)] public float health;
+        [Range(0, 4000)] public float health;
         [HideInInspector] public float time;
     }
     [SerializeField] Stats stats;

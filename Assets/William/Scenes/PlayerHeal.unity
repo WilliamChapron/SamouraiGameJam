@@ -74576,9 +74576,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   name: BOSS
   slider: {fileID: 287463820}
-  state: 2
+  state: 0
   stats:
-    health: 100
+    health: 681
     time: 0
   detection:
     range: 37
