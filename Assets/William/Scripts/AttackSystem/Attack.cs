@@ -6,8 +6,8 @@ public class Attack : MonoBehaviour
     //
     public GameObject katana1Object;  
     public GameObject katana2Object;  
-    private KatanaAttack katana1;  
-    private KatanaAttack katana2;  
+    public KatanaAttack katana1;  
+    public KatanaAttack katana2;  
 
     [Header("General Settings")]
     [SerializeField] public Transform attackPoint1;

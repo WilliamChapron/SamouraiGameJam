@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class HealthComponent : MonoBehaviour
 {
 
-    public Animator animator;
+    private Animator animator;
 
     [Header("Health Settings")]
     public float maxHealth = 100f;
@@ -19,7 +19,6 @@ public class HealthComponent : MonoBehaviour
     private void Start()
     {
         currentHealth = maxHealth;
-
         animator = GetComponentInChildren<Animator>();
     }
 
@@ -38,7 +37,7 @@ public class HealthComponent : MonoBehaviour
         currentHealth -= damageAmount;
 
 
-        //Debug.Log($"Player took {damageAmount} damage. Current health: {currentHealth}");
+        Debug.Log($"Player took {damageAmount} damage. Current health: {currentHealth}");
 
         animator.SetTrigger("TakeHit");
 

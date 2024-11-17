@@ -296,7 +296,7 @@ public class PlayerController : MonoBehaviour
             curSpeed = walkSpeed;
             characterController.height = originalHeight;
             characterController.center = originalCenter;
-            Debug.Log("Roll Ended: RollTime = " + rollTime);
+            //Debug.Log("Roll Ended: RollTime = " + rollTime);
             animator.applyRootMotion = true;
         }
 
