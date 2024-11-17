@@ -11,6 +11,8 @@ public class ComboAttackBehaviour : StateMachineBehaviour
         {
             attackComponent.IsComboAttacking = false;
             Debug.Log("IsComboAttacking réinitialisé à false.");
+            attackComponent.katana1.StopAttack();
+            attackComponent.katana2.StopAttack();
         }
         else
         {

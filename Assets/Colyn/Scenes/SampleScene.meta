@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Ryad/Scenes/SampleScene.meta
+guid: 556032fa75c64f042a8b5af612f46c65
+=======
 guid: 14c50a92d4a644b4aafff4de3b2d6f47
+>>>>>>> Colyn:Assets/Colyn/Scenes/SampleScene.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

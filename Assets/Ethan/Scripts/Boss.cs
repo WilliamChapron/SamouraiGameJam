@@ -16,7 +16,7 @@ public class Boss : MonoBehaviour {
     float health;
 
     [Serializable] struct Stats {
-        [Range(0, 100)] public float health;
+        [Range(0, 4000)] public float health;
         [HideInInspector] public float time;
     }
     [SerializeField] Stats stats;
@@ -128,9 +128,17 @@ public class Boss : MonoBehaviour {
         Destroy(gameObject);
     }
 
-    public void TakeDammage(float ammount) {
-        if (health > 0) { health -= ammount; }
-        else { Die(); }
+    public void TakeDammage(float amount)
+    {
+        if (health > 0)
+        {
+            health -= amount;
+            Debug.Log("Boss Health: " + health); 
+        }
+        else
+        {
+            Die();
+        }
     }
 
     private void OnDrawGizmos() {

@@ -3,6 +3,12 @@ using UnityEngine;
 
 public class Attack : MonoBehaviour
 {
+    //
+    public GameObject katana1Object;  
+    public GameObject katana2Object;  
+    public KatanaAttack katana1;  
+    public KatanaAttack katana2;  
+
     [Header("General Settings")]
     [SerializeField] public Transform attackPoint1;
     [SerializeField] public Transform attackPoint2;
@@ -25,23 +31,17 @@ public class Attack : MonoBehaviour
     private bool canCombo = false;
 
     [Header("Kunai Attack Settings")]
-    public GameObject kunaiPrefab; // Préfab du kunai
-    public Transform kunaiSpawnPoint; // Point de départ du kunai
-    public float kunaiAttackCooldown = 1f; // Temps de recharge entre deux attaques
-    public float kunaiSpeed = 15f; // Vitesse de lancement du kunai
-    public float kunaiLifetime = 5f; // Durée de vie du kunai après son lancement
-    private float lastKunaiAttackTime = 0f; // Temps du dernier lancement de kunai
+    public GameObject kunaiPrefab; 
+    public Transform kunaiSpawnPoint; 
+    public float kunaiAttackCooldown = 1f; 
+    public float kunaiSpeed = 15f; 
+    public float kunaiLifetime = 5f; 
+    private float lastKunaiAttackTime = 0f; 
 
     [Header("Effects & Debugging")]
-    public GameObject lightAttackEffect;
-    public GameObject comboAttackEffect;
-    public GameObject debugTrailPrefab; 
-    public Color debugAttackRangeColor = Color.red;
-    public AudioClip lightAttackSound;
-    public AudioClip comboAttackSound;
 
-    private AudioSource audioSource;
     private Animator animator;
+    private HealthComponent healthComponent;
 
     //State
     private bool isLightAttacking = false;
@@ -68,11 +68,16 @@ public class Attack : MonoBehaviour
     {
         curAttackPoint = attackPoint1;
         animator = GetComponentInChildren<Animator>();
-        audioSource = GetComponent<AudioSource>();
+        healthComponent = GetComponent<HealthComponent>();
+
+        katana1 = katana1Object.GetComponent<KatanaAttack>();
+        katana2 = katana2Object.GetComponent<KatanaAttack>();
     }
 
     private void Update()
     {
+        if (healthComponent.isDead) return; 
+
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             curAttackPoint = attackPoint1;
@@ -186,27 +191,93 @@ public class Attack : MonoBehaviour
 
     private void PerformAttack(float damage)
     {
-        Collider[] hitEnemies = Physics.OverlapSphere(curAttackPoint.position, attackRange, enemyLayer);
-
-        foreach (Collider enemy in hitEnemies)
+        if (katana1 != null && katana2 != null)
         {
-            Debug.Log(enemy);
-
-            if (enemy.gameObject.tag == "Boss") {
-                enemy.gameObject.GetComponent<Boss>().TakeDammage(5);
-            }
-
-            if (enemy.gameObject.tag == "Enemy") // 31: Enemy
-            {
-                Debug.Log("Found enemy");
-                enemy.gameObject.GetComponent<EnemyScript>().TakeDamage(5);
-            }
+            katana1.StartAttack();
+            katana2.StartAttack();
         }
+        //// Log pour indiquer que l'attaque est lancée
+        //Debug.Log("Attempting to perform attack with damage: " + damage);
 
-        if (hitEnemies.Length == 0)
-        {
-        }
+        //// Vérification de la présence d'ennemis dans la portée
+        //Collider[] hitEnemies = Physics.OverlapSphere(curAttackPoint.position, attackRange, enemyLayer);
+
+        //if (hitEnemies.Length == 0)
+        //{
+        //    Debug.Log("No enemies found within attack range.");
+        //}
+
+        //foreach (Collider enemy in hitEnemies)
+        //{
+        //    // Log pour chaque ennemi détecté dans la portée
+        //    Debug.Log("Enemy detected: " + enemy.gameObject.name);
+
+        //    if (enemy.gameObject.CompareTag("Boss"))
+        //    {
+        //        // Log pour indiquer qu'un boss a été trouvé
+        //        Debug.Log("Boss detected: " + enemy.gameObject.name);
+
+        //        // Vérifier si le katana touche l'ennemi
+        //        if (IsKatanaTouchingEnemy(enemy))
+        //        {
+        //            // Log lorsque le katana touche le boss
+        //            Debug.Log("Katana is touching the boss!");
+
+        //            // Appliquer les dégâts au boss
+        //            enemy.gameObject.GetComponent<Boss>().TakeDammage(damage);
+        //        }
+        //        else
+        //        {
+        //            // Log pour indiquer que le katana ne touche pas le boss
+        //            Debug.Log("Katana is NOT touching the boss.");
+        //        }
+        //    }
+        //}
     }
+
+    //private bool IsKatanaTouchingEnemy(Collider enemy)
+    //{
+    //    // Récupérer le BoxCollider du katana (enfant du point d'attaque)
+    //    BoxCollider katanaCollider = curAttackPoint.GetComponentInChildren<BoxCollider>();
+
+    //    if (katanaCollider != null)
+    //    {
+    //        // Log pour afficher les informations du collider du katana
+    //        Debug.Log("Katana Collider Bounds: " + katanaCollider.bounds);
+
+    //        // Récupérer tous les colliders du boss (tous les os avec des colliders)
+    //        Collider[] bossColliders = enemy.gameObject.GetComponentsInChildren<Collider>();
+
+    //        foreach (Collider bossCollider in bossColliders)
+    //        {
+    //            if (bossCollider != null)
+    //            {
+    //                // Log pour afficher les informations des colliders du boss
+    //                Debug.Log("Boss Collider Bounds: " + bossCollider.bounds);
+
+    //                // Vérifier si le collider du katana entre en collision avec un des colliders du boss
+    //                bool isTouching = katanaCollider.bounds.Intersects(bossCollider.bounds);
+
+    //                // Log pour savoir si les colliders se touchent ou non
+    //                if (isTouching)
+    //                {
+    //                    Debug.Log("Katana touching boss's collider: " + bossCollider.gameObject.name);
+    //                    return true; // Si on touche un collider du boss, on retourne vrai
+    //                }
+    //            }
+    //        }
+
+    //        // Si aucun collider du boss n'est touché
+    //        Debug.Log("Katana is NOT touching any of the boss's colliders.");
+    //        return false;
+    //    }
+    //    else
+    //    {
+    //        // Log si le BoxCollider du katana est manquant
+    //        Debug.LogWarning("Collider(s) missing: KatanaCollider");
+    //        return false;
+    //    }
+    //}
 
     private void LaunchKunai()
     {
@@ -218,18 +289,18 @@ public class Attack : MonoBehaviour
 
         GameObject kunai = Instantiate(kunaiPrefab, kunaiSpawnPoint.position, kunaiSpawnPoint.rotation);
 
-
+ 
         Rigidbody rb = kunai.GetComponent<Rigidbody>();
         if (rb == null)
         {
-            rb = kunai.AddComponent<Rigidbody>();
+            rb = kunai.AddComponent<Rigidbody>(); 
         }
 
         Vector3 currentScale = kunai.transform.localScale;
         kunai.transform.localScale = new Vector3(currentScale.x * 10, currentScale.y * 10, currentScale.z * 10);
 
-        rb.isKinematic = false;
-        rb.useGravity = false;
+        rb.isKinematic = false; 
+        rb.useGravity = false;  
 
         rb.velocity = transform.forward * kunaiSpeed;
 
