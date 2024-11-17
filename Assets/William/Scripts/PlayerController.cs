@@ -231,6 +231,13 @@ public class PlayerController : MonoBehaviour
     }
     #endregion
 
+    public void TP(Transform position)
+    {
+        characterController.enabled = false;
+        transform.position = position.position;
+        characterController.enabled = true;
+    }
+
     private void HandleJump()
     {
         if (isGrounded && Input.GetButtonDown("Jump"))

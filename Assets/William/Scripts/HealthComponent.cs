@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class HealthComponent : MonoBehaviour
 {
 
+    [SerializeField] GameObject deathScreen;
+
     private Animator animator;
 
     [Header("Health Settings")]
@@ -17,6 +19,8 @@ public class HealthComponent : MonoBehaviour
 
     [Header("Death Settings")]
     public bool isDead = false;
+
+    int time = 0, timer = 8;
 
     private void Start()
     {
@@ -62,6 +66,13 @@ public class HealthComponent : MonoBehaviour
         damageVolume.weight = Mathf.Lerp(damageVolume.weight, 0, 0.03f);
     }
 
+    IEnumerator WaitForMyBite()
+    {
+        yield return new WaitForSeconds(4);
+        deathScreen.SetActive(true);
+        Destroy(gameObject, 3f);
+    }
+
     private void Die()
     {
         if (isDead) return;
@@ -69,8 +80,8 @@ public class HealthComponent : MonoBehaviour
 
         animator.SetTrigger("Die");
 
-        // Désactiver ou détruire le joueur après la mort
-        Destroy(gameObject, 3f); // Détruire le personnage après 3 secondes (ou autre logique de fin)
+        StartCoroutine(WaitForMyBite());
+
     }
 
     //public void Heal(float healAmount)

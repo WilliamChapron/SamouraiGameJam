@@ -55,20 +55,20 @@ public class GuardFormation : MonoBehaviour
 
         enemyOffset[4] = new Vector3(0, 0, 0);   // Centre bas (Rangée 3)
 
-        enemySpawn[0] = new Vector3(-16, 0, 24);  // Gauche élargie (Rangée 1)
-        enemySpawn[1] = new Vector3(16, 0, 24);   // Droite élargie (Rangée 1)
+        enemySpawn[0] = new Vector3(1, 0.5f, -9);  // Gauche élargie (Rangée 1)
+        enemySpawn[1] = new Vector3(-8, 0.5f, -9);   // Droite élargie (Rangée 1)
 
-        enemySpawn[2] = new Vector3(-8, 0, 12);   // Gauche rapprochée (Rangée 2)
-        enemySpawn[3] = new Vector3(8, 0, 12);    // Droite rapprochée (Rangée 2)
+        enemySpawn[2] = new Vector3(-16, 0.5f, -9);   // Gauche rapprochée (Rangée 2)
+        enemySpawn[3] = new Vector3(0.7f, 0.5f, 12);    // Droite rapprochée (Rangée 2)
 
-        enemySpawn[4] = new Vector3(0, 0, 0);     // Centre bas (Rangée 3)
+        enemySpawn[4] = new Vector3(-16, 0.5f, 12);     // Centre bas (Rangée 3)
 
         generalFormationOffset = new Vector3(0, 0, -6);
 
         for (int i = 0; i < 5; i++)
         {
             deadEnemyIndex[i] = false;
-            guards[i] = Instantiate(guardPrefab, playerPosition + enemySpawn[i] + (generalFormationOffset * 2), transform.rotation, transform);
+            guards[i] = Instantiate(guardPrefab, enemySpawn[i], transform.rotation, transform);
             guardStateManagers[i] = guards[i].GetComponent<StateManager>();
             guardScripts[i] = guards[i].GetComponent<GuardScript>();
             healthComponents[i] = guards[i].GetComponent<HealthEnemiesComponent>();
