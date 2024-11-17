@@ -74725,7 +74725,7 @@ CapsuleCollider:
   m_LayerOverridePriority: 0
   m_IsTrigger: 0
   m_ProvidesContacts: 0
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 2
   m_Height: 10
@@ -96970,6 +96970,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 0
   katana: {fileID: 1613460218}
+  attackDuration: 3.2
 --- !u!1 &1941012078
 GameObject:
   m_ObjectHideFlags: 0

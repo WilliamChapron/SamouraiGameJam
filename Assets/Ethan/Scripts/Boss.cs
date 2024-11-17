@@ -94,8 +94,16 @@ public class Boss : MonoBehaviour {
                 if (agent.remainingDistance < detection.minDistance && !agent.isStopped) {
                     agent.isStopped = true;
 
-                        if (GetComponent<Collider>().tag == detection.tag) animator.SetTrigger("Attack2");
-                        else animator.SetTrigger("Idle");
+                    bool foundPlayer = false;
+
+                    foreach (Collider collider in colliders)
+                    {
+                        if (collider.tag == detection.tag) { foundPlayer = true; }
+                    }
+
+                    if(foundPlayer) { animator.SetTrigger("Attack2"); }
+                    else { animator.SetTrigger("Idle"); }
+
                 }
                 break;
             case 1:
