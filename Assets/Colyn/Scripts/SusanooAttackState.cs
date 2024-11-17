@@ -19,7 +19,7 @@ public class SusanooAttackState : State
     {
         // Attack
         Debug.Log("Attacks");
-        susanooScript.Attack();
+        susanooScript.PlayAttack();
 
         attackTime -= Time.deltaTime;
 

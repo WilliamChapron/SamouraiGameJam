@@ -23,6 +23,8 @@ public class GuardChaseState : State
 
         if (playerInAttackRange)
         {
+            // Attack
+            guard.StartAttack();
             return attackState;
         }
 

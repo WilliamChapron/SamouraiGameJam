@@ -53,11 +53,10 @@ public class HealthComponent : MonoBehaviour
         if (isDead) return;
         isDead = true;
 
-
         animator.SetTrigger("Die");
 
         // Désactiver ou détruire le joueur après la mort
-        //Destroy(gameObject, 3f); // Détruire le personnage après 3 secondes (ou autre logique de fin)
+        Destroy(gameObject, 3f); // Détruire le personnage après 3 secondes (ou autre logique de fin)
     }
 
     //public void Heal(float healAmount)
