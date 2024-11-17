@@ -8,6 +8,8 @@ public class Boss : MonoBehaviour {
     [Header("Setup")]
     [SerializeField] new string name = "BOSS";
 
+    [SerializeField] HurtPlayer pl_y;
+
     [SerializeField] Slider slider;
 
     [Range(0, 3)]
@@ -93,7 +95,17 @@ public class Boss : MonoBehaviour {
 
                 if (agent.remainingDistance < detection.minDistance && !agent.isStopped) {
                     agent.isStopped = true;
-                    animator.SetTrigger("Attack2");
+
+                    bool foundPlayer = false;
+
+                    foreach (Collider collider in colliders)
+                    {
+                        if (collider.tag == detection.tag) { foundPlayer = true; }
+                    }
+
+                    if(foundPlayer) { animator.SetTrigger("Attack2"); pl_y.hurt = true; }
+                    else { animator.SetTrigger("Idle"); pl_y.hurt = false; }
+
                 }
                 break;
             case 1:
