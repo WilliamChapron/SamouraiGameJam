@@ -207,11 +207,12 @@ AnimatorState:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: Kunai/Shurikan
-  m_Speed: 1
+  m_Speed: 2
   m_CycleOffset: 0
   m_Transitions:
   - {fileID: 1893777377297960604}
-  m_StateMachineBehaviours: []
+  m_StateMachineBehaviours:
+  - {fileID: -2891874866866942738}
   m_Position: {x: 50, y: 50, z: 0}
   m_IKOnFeet: 0
   m_WriteDefaultValues: 1
@@ -220,12 +221,24 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 0}
+  m_Motion: {fileID: 7400000, guid: 3e2cb149f9d650a49bfa7575e43db173, type: 2}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
   m_CycleOffsetParameter: 
   m_TimeParameter: 
+--- !u!114 &-2891874866866942738
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2991b40b21085b4db06ad079ca4b357, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!206 &-2762556442673822071
 BlendTree:
   m_ObjectHideFlags: 1
@@ -378,7 +391,7 @@ AnimatorStateMachine:
     m_Position: {x: 760, y: 270, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 7597053067279331162}
-    m_Position: {x: 620, y: 100, z: 0}
+    m_Position: {x: 590, y: 100, z: 0}
   - serializedVersion: 1
     m_State: {fileID: 4212496200716055618}
     m_Position: {x: 560, y: 360, z: 0}

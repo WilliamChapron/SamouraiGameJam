@@ -111,7 +111,7 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftControl) && !isRolling && isGrounded)  
+        if (Input.GetKeyDown(KeyCode.C) && !isRolling && isGrounded)  
         {
             if (lastShiftTime >= 0f && (Time.time - lastShiftTime <= maxShiftDelay))
             {
@@ -235,30 +235,28 @@ public class PlayerController : MonoBehaviour
     {
         if (isGrounded && Input.GetButtonDown("Jump"))
         {
-            // Commencer le saut
             animator.SetTrigger("Jump");
             isJumping = true;
-            jumpTime = 0f; // Réinitialiser le temps du saut
-            velocityY = Mathf.Sqrt(jumpHeight * -2f * gravity); // Initialiser la vitesse verticale pour un départ rapide
+            jumpTime = 0f; 
+            velocityY = Mathf.Sqrt(jumpHeight * -2f * gravity); 
         }
 
         if (isJumping)
         {
-            // Gérer le temps du saut et ajuster la vitesse verticale (velocityY)
             jumpTime += Time.deltaTime;
 
-            if (jumpTime < 0.3f) // Accélération initiale du saut
+            if (jumpTime < 0.3f) 
             {
-                velocityY = Mathf.Lerp(velocityY, velocityY + accelerationFactor, jumpTime / 0.3f); // Départ rapide
+                velocityY = Mathf.Lerp(velocityY, velocityY + accelerationFactor, jumpTime / 0.3f); 
             }
-            else if (jumpTime < slowTimeDuration) // Ralentir pendant la durée spécifiée
+            else if (jumpTime < slowTimeDuration) 
             {
-                velocityY = velocityY + gravity * Time.deltaTime * decelerationFactor; // Applique la gravité pour la chute rapide
+                velocityY = velocityY + gravity * Time.deltaTime * decelerationFactor; 
             }
 
-            else // Après la durée du ralentissement, commence à tomber rapidement
+            else 
             {
-                velocityY = velocityY + gravity * Time.deltaTime * fallAccelerationFactor; // Applique la gravité pour la chute rapide
+                velocityY = velocityY + gravity * Time.deltaTime * fallAccelerationFactor;
             }
         }
     }
@@ -315,14 +313,10 @@ public class PlayerController : MonoBehaviour
 
 
 // knockBack 
-// lancer shuriken COMPETENCE 1
+// UI degat
 
+// Trainee katana
+// Finir kunai lancer
 
-// HIT REACTION (react)
-
-// Saut acceleration depart lente et retombe rapide 
-
-// Katana tombe meurt 
-
-
-// MODE KATANA, MODE kunai 
+// visualiser les degats qu'ont te fait 
+//visualiser les degats que tu fait 

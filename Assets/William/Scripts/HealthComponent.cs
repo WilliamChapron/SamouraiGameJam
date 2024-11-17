@@ -38,7 +38,7 @@ public class HealthComponent : MonoBehaviour
         currentHealth -= damageAmount;
 
 
-        Debug.Log($"Player took {damageAmount} damage. Current health: {currentHealth}");
+        //Debug.Log($"Player took {damageAmount} damage. Current health: {currentHealth}");
 
         animator.SetTrigger("TakeHit");
 
