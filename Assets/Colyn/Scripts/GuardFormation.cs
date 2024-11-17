@@ -18,7 +18,7 @@ public class GuardFormation : MonoBehaviour
 
     GuardScript[] guardScripts = new GuardScript[3];
 
-    HealthComponent[] healthComponents = new HealthComponent[3];
+    HealthEnemiesComponent[] healthComponents = new HealthEnemiesComponent[3];
 
     GameObject playerObject;
 
@@ -52,7 +52,7 @@ public class GuardFormation : MonoBehaviour
             guards[i] = Instantiate(guardPrefab, transform.position + enemyOffset[i], transform.rotation, transform);
             guardStateManagers[i] = guards[i].GetComponent<StateManager>();
             guardScripts[i] = guards[i].GetComponent<GuardScript>();
-            healthComponents[i] = guards[i].GetComponent<HealthComponent>();
+            healthComponents[i] = guards[i].GetComponent<HealthEnemiesComponent>();
         }    
 
         playerObject = GameObject.Find("Player");

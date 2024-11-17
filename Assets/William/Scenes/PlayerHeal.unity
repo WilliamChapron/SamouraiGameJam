@@ -96970,6 +96970,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 0
   katana: {fileID: 1613460218}
+  attackDuration: 3.2
 --- !u!1 &1941012078
 GameObject:
   m_ObjectHideFlags: 0

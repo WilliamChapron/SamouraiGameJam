@@ -5,22 +5,24 @@ using UnityEngine.AI;
 
 public class EnemyScript : MonoBehaviour
 {
+    
     public AttackCollider attackCollider;
+    private CapsuleCollider playerCollider;
 
     public float maxAttackCooldown;
     public float attackCooldown = 0;
 
-    public int damage;
+    public float damage;
     public float moveSpeed;
 
     public NavMeshAgent agent;
 
-    GameObject playerObject;
+    protected GameObject playerObject;
     public Transform playerTransform;
 
     protected Animator animator;
 
-    public HealthComponent healthComponent;
+    public HealthEnemiesComponent healthComponent;
 
     public virtual void Start()
     {
@@ -29,8 +31,9 @@ public class EnemyScript : MonoBehaviour
         playerObject = GameObject.Find("Player");
         playerTransform = playerObject.transform;
 
-        healthComponent = GetComponent<HealthComponent>();
+        healthComponent = GetComponent<HealthEnemiesComponent>();
         attackCollider = GetComponentInChildren<AttackCollider>();
+        playerCollider = playerObject.GetComponent<CapsuleCollider>();
 
         agent = GetComponent<NavMeshAgent>();
         agent.speed = moveSpeed;
@@ -48,7 +51,7 @@ public class EnemyScript : MonoBehaviour
         healthComponent.TakeDamage(damage);
     }
 
-    void SetAttackCooldown()
+    public void SetAttackCooldown()
     {
         attackCooldown = maxAttackCooldown;
     }
@@ -58,21 +61,11 @@ public class EnemyScript : MonoBehaviour
         return attackCooldown <= 0.0f;
     }
 
-    public void Attack()
+    public void PlayAttack()
     {
         // Play attack animation
 
         animator.Play("Attack");
-
-        // Run this in animation
-
-        // If collision with attack hitbox, deal damage
-        if (attackCollider.playerCollides)
-        {
-            //Player.TakeDamage(damage);
-        }
-        
-        // Run this here
 
         SetAttackCooldown();
     }

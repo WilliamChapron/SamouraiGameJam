@@ -17,9 +17,6 @@ public class GuardAttackState : State
 
     public override State RunCurrentState()
     {
-        // Attack
-        enemyStats.Attack();
-
         attackTime -= Time.deltaTime;
 
         if (attackTime < 0)
