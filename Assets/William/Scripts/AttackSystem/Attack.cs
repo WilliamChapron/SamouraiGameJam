@@ -4,8 +4,8 @@ using UnityEngine;
 public class Attack : MonoBehaviour
 {
     [Header("General Settings")]
-    [SerializeField] Transform attackPoint1;
-    [SerializeField] Transform attackPoint2;
+    [SerializeField] public Transform attackPoint1;
+    [SerializeField] public Transform attackPoint2;
 
     private Transform curAttackPoint;
 
@@ -24,6 +24,14 @@ public class Attack : MonoBehaviour
     private float lastComboTime = 0f;
     private bool canCombo = false;
 
+    [Header("Kunai Attack Settings")]
+    public GameObject kunaiPrefab; // Préfab du kunai
+    public Transform kunaiSpawnPoint; // Point de départ du kunai
+    public float kunaiAttackCooldown = 1f; // Temps de recharge entre deux attaques
+    public float kunaiSpeed = 15f; // Vitesse de lancement du kunai
+    public float kunaiLifetime = 5f; // Durée de vie du kunai après son lancement
+    private float lastKunaiAttackTime = 0f; // Temps du dernier lancement de kunai
+
     [Header("Effects & Debugging")]
     public GameObject lightAttackEffect;
     public GameObject comboAttackEffect;
@@ -38,6 +46,7 @@ public class Attack : MonoBehaviour
     //State
     private bool isLightAttacking = false;
     private bool isComboAttacking = false;
+    private bool isKunaiAttacking = false;
 
     public bool IsLightAttacking
     {
@@ -48,6 +57,11 @@ public class Attack : MonoBehaviour
     {
         get { return isComboAttacking; }
         set { isComboAttacking = value; }
+    }
+    public bool IsKunaiAttacking
+    {
+        get { return isKunaiAttacking; }
+        set { isKunaiAttacking = value; }
     }
 
     private void Start()
@@ -76,13 +90,20 @@ public class Attack : MonoBehaviour
             AttackCombo();
         }
 
+        if (Input.GetKeyDown(KeyCode.X))
+        {
+            AttackKunai();
+        }
+
     }
 
     private void AttackLight(int side)
     {
+        attackPoint1.gameObject.SetActive(true);
+        attackPoint2.gameObject.SetActive(true);
         if (isLightAttacking)
         {
-            Debug.LogWarning("Attaque légère déjà en cours !");
+            //Debug.LogWarning("Attaque légère déjà en cours !");
             return;
         }
 
@@ -101,7 +122,7 @@ public class Attack : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Attaque légère en cooldown !");
+            //Debug.LogWarning("Attaque légère en cooldown !");
         }
     }
 
@@ -109,7 +130,7 @@ public class Attack : MonoBehaviour
     {
         if (isComboAttacking)
         {
-            Debug.LogWarning("Combo déjà en cours !");
+            //Debug.LogWarning("Combo déjà en cours !");
             return;
         }
 
@@ -125,21 +146,42 @@ public class Attack : MonoBehaviour
         }
         else if (!canCombo)
         {
-            Debug.LogWarning("Impossible d'enchaîner le combo !");
+            //Debug.LogWarning("Impossible d'enchaîner le combo !");
         }
         else
         {
-            Debug.LogWarning("Le combo est en cooldown !");
+            //Debug.LogWarning("Le combo est en cooldown !");
+        }
+    }
+
+    private void AttackKunai()
+    {
+        if (isKunaiAttacking)
+        {
+            return;
+        }
+
+        if (Time.time >= lastKunaiAttackTime + kunaiAttackCooldown)
+        {
+            // Desactive Katana
+            attackPoint1.gameObject.SetActive(false);
+            attackPoint2.gameObject.SetActive(false);
+            //
+            isKunaiAttacking = true;
+
+            animator.SetTrigger("ThrowKunai");
+            LaunchKunai();
+            lastKunaiAttackTime = Time.time;
         }
     }
 
     private IEnumerator EnableComboWindow()
     {
         canCombo = true;
-        Debug.Log("Fenêtre d'enchaînement combo activée !");
+        //Debug.Log("Fenêtre d'enchaînement combo activée !");
         yield return new WaitForSeconds(comboWindow);
         canCombo = false;
-        Debug.Log("Fenêtre d'enchaînement combo fermée.");
+        //Debug.Log("Fenêtre d'enchaînement combo fermée.");
     }
 
     private void PerformAttack(float damage)
@@ -151,55 +193,35 @@ public class Attack : MonoBehaviour
             if(enemy.gameObject.tag == "Boss") {
                 enemy.gameObject.GetComponent<Boss>().TakeDammage(5);
             }
-            Debug.Log($"Enemy hit: {enemy.name}");
         }
 
         if (hitEnemies.Length == 0)
         {
-            Debug.Log("Aucun ennemi touché.");
         }
     }
 
-    //private void PlayAttackEffects(string attackType)
-    //{
-    //    if (attackType == "light")
-    //    {
-    //        audioSource.PlayOneShot(lightAttackSound);
-    //        if (lightAttackEffect != null)
-    //            Instantiate(lightAttackEffect, attackPoint.position, Quaternion.identity);
-    //    }
-    //    else if (attackType == "combo")
-    //    {
-    //        audioSource.PlayOneShot(comboAttackSound);
-    //        if (comboAttackEffect != null)
-    //            Instantiate(comboAttackEffect, attackPoint.position, Quaternion.identity);
-    //    }
-    //}
+    private void LaunchKunai()
+    {
+        if (kunaiPrefab == null || kunaiSpawnPoint == null)
+        {
+            Debug.LogWarning("Kunai prefab or spawn point is not assigned.");
+            return;
+        }
 
-    //private void CreateDebugTrail(bool isCombo = false)
-    //{
-    //    if (debugTrailPrefab != null)
-    //    {
-    //        var trail = Instantiate(debugTrailPrefab, attackPoint.position, Quaternion.identity);
-    //        var trailColor = isCombo ? Color.blue : Color.yellow;
-    //        trail.GetComponent<Renderer>().material.color = trailColor;
-    //        Destroy(trail, 1f); // Détruire la traînée après 1 seconde
-    //    }
-    //}
+        GameObject kunai = Instantiate(kunaiPrefab, kunaiSpawnPoint.position, kunaiSpawnPoint.rotation);
 
-    //private void OnDrawGizmosSelected()
-    //{
-    //    if (attackPoint == null) return;
+ 
+        Rigidbody rb = kunai.GetComponent<Rigidbody>();
+        if (rb == null)
+        {
+            rb = kunai.AddComponent<Rigidbody>(); 
+        }
 
-    //    // Visualiser la portée d'attaque
-    //    Gizmos.color = debugAttackRangeColor;
-    //    Gizmos.DrawWireSphere(attackPoint.position, attackRange);
+        rb.isKinematic = false; 
+        rb.useGravity = false;  
 
-    //    // Indiquer si le combo est activable
-    //    if (Application.isPlaying && canCombo)
-    //    {
-    //        Gizmos.color = Color.green;
-    //        Gizmos.DrawWireSphere(attackPoint.position, attackRange * 1.2f); // Cercle légèrement plus large
-    //    }
-    //}
+        rb.velocity = gameObject.gameObject * kunaiSpeed;
+
+        Destroy(kunai, kunaiLifetime);
+    }
 }
