@@ -154,6 +154,8 @@ public class Attack : MonoBehaviour
 
             animator.SetTrigger("ComboAttack");
 
+
+            Debug.Log("Active 2 Katana");
             katana1.StartAttack();
             katana2.StartAttack();
 

@@ -7,7 +7,7 @@ public class EnemyScript : MonoBehaviour
 {
     
     public AttackCollider attackCollider;
-    private CapsuleCollider playerCollider;
+    protected CapsuleCollider playerCollider;
 
     public float maxAttackCooldown;
     public float attackCooldown = 0;

@@ -18,17 +18,11 @@ public class KatanaAttack : MonoBehaviour
     public void StopAttack()
     {
         isAttackActive = false;
-        //Debug.Log("Katana attack deactivated.");
     }
 
     private void OnTriggerEnter(Collider other)
     {
 
-        //Debug.Log(isAttackActive);
-        if (other.CompareTag("Boss"))
-        {
-
-        }
 
         if (isAttackActive && other.CompareTag("Boss"))
         {
@@ -49,6 +43,7 @@ public class KatanaAttack : MonoBehaviour
         if (isAttackActive && other.CompareTag("Enemy"))
         {
             Debug.Log("Coup a l'enemy");
+            Debug.Log(other.gameObject.name);
             HealthEnemiesComponent healthEnemiesComponent = other.GetComponent<HealthEnemiesComponent>();
             healthEnemiesComponent.TakeDamage(damage);
         }
