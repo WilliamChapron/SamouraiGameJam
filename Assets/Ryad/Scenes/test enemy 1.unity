@@ -1019,7 +1019,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb6516bff1993de40b21fa197c57e3a4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackPoint: {fileID: 0}
+  katana1Object: {fileID: 0}
+  katana2Object: {fileID: 0}
+  attackPoint1: {fileID: 0}
+  attackPoint2: {fileID: 0}
   attackRange: 2
   enemyLayer:
     serializedVersion: 2
@@ -1029,12 +1032,11 @@ MonoBehaviour:
   comboDamage: 25
   comboCooldown: 0.03
   comboWindow: 1
-  lightAttackEffect: {fileID: 0}
-  comboAttackEffect: {fileID: 0}
-  debugTrailPrefab: {fileID: 0}
-  debugAttackRangeColor: {r: 1, g: 0, b: 0, a: 1}
-  lightAttackSound: {fileID: 0}
-  comboAttackSound: {fileID: 0}
+  kunaiPrefab: {fileID: 0}
+  kunaiSpawnPoint: {fileID: 0}
+  kunaiAttackCooldown: 1
+  kunaiSpeed: 15
+  kunaiLifetime: 5
 --- !u!143 &472031467
 CharacterController:
   m_ObjectHideFlags: 0
@@ -1080,6 +1082,10 @@ MonoBehaviour:
   cameraTransform: {fileID: 1003376468}
   gravity: -9.81
   jumpHeight: 1
+  accelerationFactor: 2.5
+  decelerationFactor: 0.5
+  fallAccelerationFactor: 2.5
+  slowTimeDuration: 2
   rollSpeed: 10
   rollAcceleration: 1.5
   rollDeceleration: 0.5
@@ -2321,6 +2327,7 @@ MonoBehaviour:
   player: {fileID: 472031469}
   rotationSpeed: 5
   offset: {x: 0, y: 2.5, z: -8}
+  offsetRotation: {x: 10, y: 0, z: 0}
 --- !u!114 &1003376470
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2728,7 +2735,7 @@ MonoBehaviour:
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
   m_MinRegionArea: 2
-  m_NavMeshData: {fileID: 23800000, guid: 3fc8b24a9d89d2f47840e54f39108b34, type: 2}
+  m_NavMeshData: {fileID: 23800000, guid: 3d6d3169bc0377a44bd91428beed7542, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &1203333854
 Transform:
@@ -4090,6 +4097,11 @@ PrefabInstance:
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: bf1d051a61d03a04b92bc6ecf3a713fb, type: 2}
+    - target: {fileID: 5411661525437531707, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
+        type: 3}
+      propertyPath: m_AgentTypeID
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7958566093225945344, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
       propertyPath: m_Name
@@ -4157,6 +4169,10 @@ PrefabInstance:
         type: 3}
       insertIndex: -1
       addedObject: {fileID: 873134660703679996}
+    - targetCorrespondingSourceObject: {fileID: 7958566093225945344, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 873134660703679998}
   m_SourcePrefab: {fileID: 100100000, guid: 6bd43fa3737349e4b8dad8d7ed28575a, type: 3}
 --- !u!1 &873134660703679995 stripped
 GameObject:
@@ -4176,6 +4192,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d2cfb037d3e4f34bafc96fbd3a2226d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  damage: 0
 --- !u!114 &873134660703679997
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4188,6 +4205,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd466b47b2689c7449d93aa1bf7a58aa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &873134660703679998
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 873134660703679995}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaf1694be5b4ffe4ca33369fef5a6037, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxHealth: 100
+  currentHealth: 0
+  lifebar: {fileID: 0}
+  isDead: 0
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

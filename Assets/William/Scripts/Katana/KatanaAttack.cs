@@ -8,25 +8,24 @@ public class KatanaAttack : MonoBehaviour
     public bool isAttackActive = false;
     public int hitNbr = 0;
 
-    // Appelée pour démarrer l'attaque
     public void StartAttack()
     {
         isAttackActive = true;
-        Debug.Log("Katana attack activated.");
+        //Debug.Log("Katana attack activated.");
     }
 
     // Appelée pour arrêter l'attaque
     public void StopAttack()
     {
         isAttackActive = false;
-        Debug.Log("Katana attack deactivated.");
+        //Debug.Log("Katana attack deactivated.");
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (isAttackActive && other.CompareTag("Boss"))
         {
-            Debug.Log("On trigger");
+            //Debug.Log("On trigger");
             Boss boss = other.GetComponent<Boss>();
             if (boss != null)
             {
@@ -34,6 +33,12 @@ public class KatanaAttack : MonoBehaviour
                 boss.TakeDammage(damage);
                 hitNbr += 1;
             }
+        }
+        if (isAttackActive && other.CompareTag("Enemy"))
+        {
+            Debug.Log("Coup a l'enemy");
+            HealthEnemiesComponent healthEnemiesComponent = other.GetComponent<HealthEnemiesComponent>();
+            healthEnemiesComponent.TakeDamage(damage);
         }
     }
 }

@@ -62,7 +62,7 @@ public class behaviourEnemy2 : MonoBehaviour
                 animator.Play("Attack");
                 
                 Debug.Log("Attack");
-                attackEnemy.Attack();
+                attackEnemy.StartAttack();
                 SetRightPositionAsDestination();
                 agent.SetDestination(destination);
 

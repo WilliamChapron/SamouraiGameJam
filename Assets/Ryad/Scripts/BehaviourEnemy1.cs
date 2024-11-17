@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,6 +7,7 @@ public class BehaviourEnemy1 : MonoBehaviour
     [SerializeField] float distanceEscape;
     [SerializeField] float distanceAttack;
     [SerializeField] int cooldownMax;
+    [SerializeField] float escapeDelay = 3f; // Délai avant de reculer
     private float cooldown;
 
     private int nbState = 4;
@@ -17,6 +17,7 @@ public class BehaviourEnemy1 : MonoBehaviour
     private NavMeshAgent agent;
     private Animator animator;
     private AttackEnemies attackEnemy;
+    private bool isEscaping = false; // Pour vérifier si le délai est actif
 
     void Start()
     {
@@ -26,15 +27,12 @@ public class BehaviourEnemy1 : MonoBehaviour
         attackEnemy = GetComponent<AttackEnemies>();
     }
 
-
     void Escape()
     {
         Vector3 direction = (transform.position - player.position).normalized;
         Vector3 destination = transform.position + direction * distanceEscape;
         agent.SetDestination(destination);
         agent.isStopped = false;
-
-        Debug.Log("L'ennemi s'éloigne du joueur.");
     }
 
     void Update()
@@ -48,28 +46,34 @@ public class BehaviourEnemy1 : MonoBehaviour
                     state = (state + 1) % nbState;
                 }
                 break;
+
             case 1: // attack
                 if (!agent.isStopped)
                 {
                     agent.isStopped = true;
                 }
 
-                Debug.Log("attack");
-                attackEnemy.Attack();
-                animator.Play("Attack");
+                attackEnemy.StartAttack();
+
+                if (Random.Range(0, 2) == 0)
+                {
+                    animator.SetTrigger("Random1");
+                }
+                else
+                {
+                    animator.SetTrigger("Random2");
+                }
 
                 state = (state + 1) % nbState;
                 break;
+
             case 2: // escape
-                Vector3 lookDirection = player.position - transform.position;
-                lookDirection.y = 0;
-                transform.rotation = Quaternion.LookRotation(lookDirection);
-
-                Debug.Log("L'ennemi entre en mode fuite.");
-                Escape();
-                cooldown = cooldownMax;
-                state = (state + 1) % nbState;
+                if (!isEscaping)
+                {
+                    StartCoroutine(DelayedEscape());
+                }
                 break;
+
             case 3: // wait
                 if (cooldown > 0)
                 {
@@ -78,12 +82,18 @@ public class BehaviourEnemy1 : MonoBehaviour
                     {
                         state = (state + 1) % nbState;
                         agent.SetDestination(player.position);
-                        Debug.Log("Le cooldown est terminé, l'ennemi reprend la poursuite.");
                     }
                 }
                 break;
         }
-        transform.LookAt(player);
+
+        Vector3 lookPosition = player.position - transform.position;
+        lookPosition.y = 0;
+
+        if (lookPosition != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(lookPosition);
+        }
 
         Vector3 worldDeltaPosition = agent.destination - transform.position;
 
@@ -92,5 +102,15 @@ public class BehaviourEnemy1 : MonoBehaviour
 
         animator.SetFloat("VelocityX", dx);
         animator.SetFloat("VelocityZ", dy);
+    }
+
+    IEnumerator DelayedEscape()
+    {
+        isEscaping = true;
+        yield return new WaitForSeconds(escapeDelay);
+        Escape();
+        cooldown = cooldownMax;
+        state = (state + 1) % nbState;
+        isEscaping = false;
     }
 }

@@ -11,6 +11,8 @@ public class LightAttackBehaviour : StateMachineBehaviour
         {
             attackComponent.IsLightAttacking = false;
             //Debug.Log("IsLightAttacking réinitialisé à false.");
+            attackComponent.katana1.StopAttack();
+            attackComponent.katana2.StopAttack();
         }
         else
         {

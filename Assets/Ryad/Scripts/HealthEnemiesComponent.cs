@@ -25,7 +25,7 @@ public class HealthEnemiesComponent : MonoBehaviour
 
     private void Update()
     {
-        lifebar.value = currentHealth / maxHealth;
+        //lifebar.value = currentHealth / maxHealth;
     }
 
     public void TakeDamage(float damageAmount)
@@ -37,10 +37,11 @@ public class HealthEnemiesComponent : MonoBehaviour
 
         currentHealth -= damageAmount;
 
-
-        Debug.Log($"Player took {damageAmount} damage. Current health: {currentHealth}");
-
-        animator.SetTrigger("TakeHit");
+        AnimatorStateInfo currentState = animator.GetCurrentAnimatorStateInfo(0); 
+        if (!currentState.IsName("ReactionHit"))
+        {
+            animator.SetTrigger("TakeHit");
+        }
 
 
         if (currentHealth <= 0f)
@@ -57,6 +58,6 @@ public class HealthEnemiesComponent : MonoBehaviour
 
         animator.SetTrigger("Die");
 
-        Destroy(gameObject, 3f); // Détruire le personnage après 3 secondes (ou autre logique de fin)
+        Destroy(gameObject, 1f); // Détruire le personnage après 3 secondes (ou autre logique de fin)
     }
 }
