@@ -13,18 +13,30 @@ public class BehaviourEnemy1 : MonoBehaviour
     private int nbState = 4;
     [Range(0, 3)][SerializeField] int state = 0;
 
-    public Transform player;
+    private Transform player;
     private NavMeshAgent agent;
     private Animator animator;
     private AttackEnemies attackEnemy;
+    private HealthEnemiesComponent healthEnemy;
     private bool isEscaping = false; // Pour vérifier si le délai est actif
 
     void Start()
     {
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        if (playerObject != null)
+        {
+            player = playerObject.transform;
+        }
+        else
+        {
+            Debug.LogError("Player not found. Please ensure an object with the tag 'Player' exists in the scene.");
+        }
+
         agent = GetComponent<NavMeshAgent>();
         agent.SetDestination(player.position);
         animator = GetComponentInChildren<Animator>();
         attackEnemy = GetComponent<AttackEnemies>();
+        healthEnemy = GetComponent<HealthEnemiesComponent>();
     }
 
     void Escape()
@@ -37,6 +49,12 @@ public class BehaviourEnemy1 : MonoBehaviour
 
     void Update()
     {
+        if (healthEnemy.isDead == true)
+        {
+            agent.isStopped = true;
+            return;
+        }
+
         switch (state)
         {
             case 0: // chase
@@ -55,14 +73,7 @@ public class BehaviourEnemy1 : MonoBehaviour
 
                 attackEnemy.StartAttack();
 
-                if (Random.Range(0, 2) == 0)
-                {
-                    animator.SetTrigger("Random1");
-                }
-                else
-                {
-                    animator.SetTrigger("Random2");
-                }
+                animator.SetTrigger("Random1");
 
                 state = (state + 1) % nbState;
                 break;

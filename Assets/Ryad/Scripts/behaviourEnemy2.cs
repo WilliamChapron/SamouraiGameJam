@@ -11,7 +11,7 @@ public class behaviourEnemy2 : MonoBehaviour
     private int nbState = 3;
     [Range(0, 2)][SerializeField] int state = 0;
 
-    public Transform player;
+    private Transform player;
     private NavMeshAgent agent;
     private Animator animator;
     private AttackEnemies attackEnemy;
@@ -23,6 +23,16 @@ public class behaviourEnemy2 : MonoBehaviour
 
     void Start()
     {
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        if (playerObject != null)
+        {
+            player = playerObject.transform;
+        }
+        else
+        {
+            Debug.LogError("Player not found. Please ensure an object with the tag 'Player' exists in the scene.");
+        }
+
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
         attackEnemy = GetComponent<AttackEnemies>();
