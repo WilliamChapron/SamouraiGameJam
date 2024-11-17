@@ -19,12 +19,17 @@ public class GuardChaseState : State
 
     public override State RunCurrentState()
     {
-        playerInAttackRange = (transform.position - player.position).magnitude <= 2.5f;
+        playerInAttackRange = (transform.position - player.position).magnitude <= 2.0f;
 
         if (playerInAttackRange)
         {
+            guard.agent.destination = guard.playerTransform.position;
+
+            guard.Decelerate();
+
             // Attack
             guard.StartAttack();
+            
             return attackState;
         }
 

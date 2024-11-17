@@ -26,7 +26,7 @@ public class GuardScript : EnemyScript
 
     public override void Start()
     {
-        damage = 5.0f;
+        damage = 50.0f;
         stateManager = GetComponent<StateManager>();
 
         moveSpeed = 2.0f;
@@ -38,6 +38,18 @@ public class GuardScript : EnemyScript
         katanaCollider = katana.GetComponent<BoxCollider>();
 
         healthComponent.maxHealth = 50.0f;
+    }
+
+    public void Accelerate()
+    {
+        moveSpeed += 2.0f;
+        agent.speed = moveSpeed;
+    }
+
+    public void Decelerate()
+    {
+        moveSpeed -= 2.0f;
+        agent.speed = moveSpeed;
     }
 
     public void StartAttack()

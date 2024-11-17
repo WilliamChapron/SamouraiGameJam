@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class GuardAttackState : State
 {
-    GuardScript enemyStats;
+    GuardScript guard;
     public GuardIdleState idleState;
 
     float attackTime = 0.5f;
@@ -12,11 +12,14 @@ public class GuardAttackState : State
 
     void Start()
     {
-        enemyStats = GetComponentInParent<GuardScript>();
+        guard = GetComponentInParent<GuardScript>();
     }
 
     public override State RunCurrentState()
     {
+
+        guard.agent.destination = guard.transform.position;
+
         attackTime -= Time.deltaTime;
 
         if (attackTime < 0)
