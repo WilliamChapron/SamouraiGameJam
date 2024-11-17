@@ -117,11 +117,20 @@ public class Attack : MonoBehaviour
             isLightAttacking = true;
 
             if (side == 0)
+            {
                 animator.SetTrigger("LightAttackLeft");
-            else if (side == 1)
-                animator.SetTrigger("LightAttackRight");
+                katana1.StartAttack();
+            }
+                
 
-            PerformAttack(lightAttackDamage);
+            else if (side == 1)
+            {
+                animator.SetTrigger("LightAttackRight");
+                katana2.StartAttack();
+            }
+                
+
+
             StartCoroutine(EnableComboWindow());
             lastLightAttackTime = Time.time;
         }
@@ -144,7 +153,9 @@ public class Attack : MonoBehaviour
             isComboAttacking = true;
 
             animator.SetTrigger("ComboAttack");
-            PerformAttack(comboDamage);
+
+            katana1.StartAttack();
+            katana2.StartAttack();
 
             lastComboTime = Time.time;
             canCombo = false;
@@ -188,96 +199,6 @@ public class Attack : MonoBehaviour
         canCombo = false;
         //Debug.Log("Fenêtre d'enchaînement combo fermée.");
     }
-
-    private void PerformAttack(float damage)
-    {
-        if (katana1 != null && katana2 != null)
-        {
-            katana1.StartAttack();
-            katana2.StartAttack();
-        }
-        //// Log pour indiquer que l'attaque est lancée
-        //Debug.Log("Attempting to perform attack with damage: " + damage);
-
-        //// Vérification de la présence d'ennemis dans la portée
-        //Collider[] hitEnemies = Physics.OverlapSphere(curAttackPoint.position, attackRange, enemyLayer);
-
-        //if (hitEnemies.Length == 0)
-        //{
-        //    Debug.Log("No enemies found within attack range.");
-        //}
-
-        //foreach (Collider enemy in hitEnemies)
-        //{
-        //    // Log pour chaque ennemi détecté dans la portée
-        //    Debug.Log("Enemy detected: " + enemy.gameObject.name);
-
-        //    if (enemy.gameObject.CompareTag("Boss"))
-        //    {
-        //        // Log pour indiquer qu'un boss a été trouvé
-        //        Debug.Log("Boss detected: " + enemy.gameObject.name);
-
-        //        // Vérifier si le katana touche l'ennemi
-        //        if (IsKatanaTouchingEnemy(enemy))
-        //        {
-        //            // Log lorsque le katana touche le boss
-        //            Debug.Log("Katana is touching the boss!");
-
-        //            // Appliquer les dégâts au boss
-        //            enemy.gameObject.GetComponent<Boss>().TakeDammage(damage);
-        //        }
-        //        else
-        //        {
-        //            // Log pour indiquer que le katana ne touche pas le boss
-        //            Debug.Log("Katana is NOT touching the boss.");
-        //        }
-        //    }
-        //}
-    }
-
-    //private bool IsKatanaTouchingEnemy(Collider enemy)
-    //{
-    //    // Récupérer le BoxCollider du katana (enfant du point d'attaque)
-    //    BoxCollider katanaCollider = curAttackPoint.GetComponentInChildren<BoxCollider>();
-
-    //    if (katanaCollider != null)
-    //    {
-    //        // Log pour afficher les informations du collider du katana
-    //        Debug.Log("Katana Collider Bounds: " + katanaCollider.bounds);
-
-    //        // Récupérer tous les colliders du boss (tous les os avec des colliders)
-    //        Collider[] bossColliders = enemy.gameObject.GetComponentsInChildren<Collider>();
-
-    //        foreach (Collider bossCollider in bossColliders)
-    //        {
-    //            if (bossCollider != null)
-    //            {
-    //                // Log pour afficher les informations des colliders du boss
-    //                Debug.Log("Boss Collider Bounds: " + bossCollider.bounds);
-
-    //                // Vérifier si le collider du katana entre en collision avec un des colliders du boss
-    //                bool isTouching = katanaCollider.bounds.Intersects(bossCollider.bounds);
-
-    //                // Log pour savoir si les colliders se touchent ou non
-    //                if (isTouching)
-    //                {
-    //                    Debug.Log("Katana touching boss's collider: " + bossCollider.gameObject.name);
-    //                    return true; // Si on touche un collider du boss, on retourne vrai
-    //                }
-    //            }
-    //        }
-
-    //        // Si aucun collider du boss n'est touché
-    //        Debug.Log("Katana is NOT touching any of the boss's colliders.");
-    //        return false;
-    //    }
-    //    else
-    //    {
-    //        // Log si le BoxCollider du katana est manquant
-    //        Debug.LogWarning("Collider(s) missing: KatanaCollider");
-    //        return false;
-    //    }
-    //}
 
     private void LaunchKunai()
     {
