@@ -23,6 +23,8 @@ public class GuardScript : EnemyScript
         maxAttackCooldown = 5.0f;
 
         base.Start();
+
+        healthComponent.maxHealth = 50.0f;
     }
 
     public override void TakeDamage(int damage)
@@ -44,7 +46,6 @@ public class GuardScript : EnemyScript
         base.Update();
 
         // Turn to player
-        //transform.LookAt(playerTransform);
 
         Vector3 lookDirection = playerTransform.position - transform.position;
         lookDirection.y = 0; // Gardez l'axe Y constant pour éviter de pencher vers le haut ou le bas

@@ -26,6 +26,7 @@ public class GuardKnockbackState : State
     {
         // Show knockback anim
         // Does nothing
+        guard.agent.destination = transform.position;
 
         knockbackTime -= Time.deltaTime;
 

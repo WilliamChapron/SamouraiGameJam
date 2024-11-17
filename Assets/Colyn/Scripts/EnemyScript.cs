@@ -20,7 +20,7 @@ public class EnemyScript : MonoBehaviour
 
     protected Animator animator;
 
-    HealthComponent healthComponent;
+    public HealthComponent healthComponent;
 
     public virtual void Start()
     {
