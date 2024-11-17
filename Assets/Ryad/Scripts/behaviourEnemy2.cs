@@ -7,21 +7,22 @@ public class behaviourEnemy2 : MonoBehaviour
 {
     [SerializeField] float distanceEscape;
     [SerializeField] float distanceAttack;
-    [SerializeField] int cooldownMax;
-    private float cooldown;
 
-    private int nbState = 4;
-    [Range(0, 4)][SerializeField] int state = 0;
+    private int nbState = 3;
+    [Range(0, 2)][SerializeField] int state = 0;
 
     public Transform player;
     private NavMeshAgent agent;
+    private Animator animator;
 
     private Vector3 destination;
+
+    private bool HasWait = false;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-
+        animator = GetComponentInChildren<Animator>();
         // Calcul initial de la position à droite du joueur
         SetRightPositionAsDestination();
     }
@@ -37,40 +38,43 @@ public class behaviourEnemy2 : MonoBehaviour
                 {
                     if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
                     {
+                        agent.SetDestination(player.position);
                         state = (state + 1) % nbState;
                     }
                 }
                 break;
             case 1:
-                agent.SetDestination(player.position);
-
                 if (agent.remainingDistance <= distanceAttack)
                 {
                     state = (state + 1) % nbState;
                 }
                 break;
             case 2:
-                agent.isStopped = true;
+                if (!HasWait)
+                {
+                    agent.isStopped = true;
+                    HasWait = true;
+                    break;
+                }
+                HasWait = false;
+                animator.Play("Attack");
+                
                 Debug.Log("Attack");
+                SetRightPositionAsDestination();
+                agent.SetDestination(destination);
 
-                cooldown = cooldownMax;
                 state = (state + 1) % nbState;
                 break;
-            case 3:
-                if (cooldown > 0)
-                {
-                    cooldown -= Time.deltaTime;
-                    Debug.Log("Wait");
-                    if (cooldown <= 0)
-                    {
-                        state = (state + 1) % nbState;
-
-                        SetRightPositionAsDestination();
-                        agent.SetDestination(destination);
-                    }
-                }
-                break;
         }
+        transform.LookAt(player);
+
+        Vector3  worldDeltaPosition = agent.destination - transform.position;
+
+        float dx = Vector3.Dot(transform.right, worldDeltaPosition);
+        float dy = Vector3.Dot(transform.forward, worldDeltaPosition);
+
+        animator.SetFloat("VelocityX", dx);
+        animator.SetFloat("VelocityZ", dy);
     }
 
     private void SetRightPositionAsDestination()
@@ -78,6 +82,17 @@ public class behaviourEnemy2 : MonoBehaviour
         Vector3 originalVector = player.position - transform.position; // Un vecteur sur l'axe X
         Quaternion rotation = Quaternion.Euler(0, 90, 0); // Rotation de 90 degrés autour de l'axe Y
         Vector3 rotatedVector = rotation * originalVector;
-        destination = player.position + rotatedVector * distanceEscape;
+        int nbRandom = Random.Range(0, 2);
+        float distance = (float)Random.Range(12, (int)(distanceEscape * 10) + 1) / 10f;
+        int direction;
+        if (nbRandom == 0)
+        {
+            direction = -1;
+        }
+        else
+        {
+            direction = 1;
+        }
+        destination = player.position + rotatedVector * distance * direction;
     }
 }
