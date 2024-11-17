@@ -1145,7 +1145,7 @@ PrefabInstance:
     - target: {fileID: 7958566093225945344, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7958566093225945344, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
@@ -1170,7 +1170,7 @@ PrefabInstance:
     - target: {fileID: 8014077370452508113, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -23.61
+      value: -18.54
       objectReference: {fileID: 0}
     - target: {fileID: 8014077370452508113, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
@@ -1180,7 +1180,7 @@ PrefabInstance:
     - target: {fileID: 8014077370452508113, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -33.69
+      value: -46.58
       objectReference: {fileID: 0}
     - target: {fileID: 8014077370452508113, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
@@ -23833,7 +23833,7 @@ Transform:
   m_GameObject: {fileID: 446514123}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -9.26, y: 0, z: -22.12}
+  m_LocalPosition: {x: -26.25, y: 0, z: -44.09}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -25903,6 +25903,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   isAttackActive: 0
+  isAttackON: 0
   hitNbr: 0
 --- !u!1001 &476158425
 PrefabInstance:
@@ -57722,7 +57723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d2cfb037d3e4f34bafc96fbd3a2226d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
+  damage: 10
   katana: {fileID: 209190255}
   attackDuration: 3.2
 --- !u!1001 &1082287255
@@ -57771,7 +57772,7 @@ PrefabInstance:
     - target: {fileID: 7958566093225945344, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7958566093225945344, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
@@ -57796,7 +57797,7 @@ PrefabInstance:
     - target: {fileID: 8014077370452508113, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -27.26
+      value: -38.64
       objectReference: {fileID: 0}
     - target: {fileID: 8014077370452508113, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
@@ -66060,7 +66061,7 @@ PrefabInstance:
     - target: {fileID: 7958566093225945344, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7958566093225945344, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
@@ -66085,7 +66086,7 @@ PrefabInstance:
     - target: {fileID: 8014077370452508113, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: -25.612
+      value: -29.01
       objectReference: {fileID: 0}
     - target: {fileID: 8014077370452508113, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
@@ -66095,7 +66096,7 @@ PrefabInstance:
     - target: {fileID: 8014077370452508113, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -36.25
+      value: -40.71
       objectReference: {fileID: 0}
     - target: {fileID: 8014077370452508113, guid: 6bd43fa3737349e4b8dad8d7ed28575a,
         type: 3}
@@ -82910,7 +82911,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d2cfb037d3e4f34bafc96fbd3a2226d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  damage: 0
+  damage: 10
   katana: {fileID: 1924061697}
   attackDuration: 3.2
 --- !u!1 &1726302234
@@ -97209,6 +97210,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 10
   isAttackActive: 0
+  isAttackON: 0
   hitNbr: 0
 --- !u!1 &1920143606
 GameObject:

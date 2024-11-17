@@ -8,23 +8,23 @@ public class GuardFormation : MonoBehaviour
 
     public GameObject guardPrefab;
 
-    GameObject[] guards = new GameObject[3];
+    GameObject[] guards = new GameObject[5];
 
-    StateManager[] guardStateManagers = new StateManager[3];
+    StateManager[] guardStateManagers = new StateManager[5];
 
     int nextGuardToAttack = 0;
 
-    bool[] isGuardAttacking = new bool[3];
+    bool[] isGuardAttacking = new bool[5];
 
-    GuardScript[] guardScripts = new GuardScript[3];
+    GuardScript[] guardScripts = new GuardScript[5];
 
-    HealthEnemiesComponent[] healthComponents = new HealthEnemiesComponent[3];
+    HealthEnemiesComponent[] healthComponents = new HealthEnemiesComponent[5];
 
     GameObject playerObject;
 
-    float maxTimeUntilNextAttack = 2.0f;
+    float maxTimeUntilNextAttack = 0.5f;
 
-    float timeUntilNextAttack = 2.0f;
+    float timeUntilNextAttack = 0.5f;
 
     float maxTimeUntilNextOffset = 1.5f;
 
@@ -32,37 +32,54 @@ public class GuardFormation : MonoBehaviour
 
     float maxRandomTimeUntilNextOffset = 1f;
 
-    Vector3[] randomGuardOffset = new Vector3[3];
+    Vector3[] randomGuardOffset = new Vector3[5];
 
     float randomOffsetRange = 0.8f;
 
-    bool[] deadEnemyIndex = new bool[3];
+    bool[] deadEnemyIndex = new bool[5];
 
-    Vector3[] enemyOffset = new Vector3[3];
+    Vector3[] enemyOffset = new Vector3[5];
+    Vector3 generalFormationOffset;
+    Vector3[] enemySpawn = new Vector3[5];
 
     void Start()
     {
-        enemyOffset[0] = new Vector3(-4, 0, 0);
-        enemyOffset[1] = new Vector3(2, 0, -5);
-        enemyOffset[2] = new Vector3(2, 0, 5);
+        playerObject = GameObject.Find("Player");
+        Vector3 playerPosition = playerObject.transform.position;
 
-        for (int i = 0; i < 3; i++)
+        enemyOffset[0] = new Vector3(-8, 0, 12);  // Gauche élargie (Rangée 1)
+        enemyOffset[1] = new Vector3(8, 0, 12);   // Droite élargie (Rangée 1)
+
+        enemyOffset[2] = new Vector3(-4, 0, 6);  // Gauche rapprochée (Rangée 2)
+        enemyOffset[3] = new Vector3(4, 0, 6);   // Droite rapprochée (Rangée 2)
+
+        enemyOffset[4] = new Vector3(0, 0, 0);   // Centre bas (Rangée 3)
+
+        enemySpawn[0] = new Vector3(-16, 0, 24);  // Gauche élargie (Rangée 1)
+        enemySpawn[1] = new Vector3(16, 0, 24);   // Droite élargie (Rangée 1)
+
+        enemySpawn[2] = new Vector3(-8, 0, 12);   // Gauche rapprochée (Rangée 2)
+        enemySpawn[3] = new Vector3(8, 0, 12);    // Droite rapprochée (Rangée 2)
+
+        enemySpawn[4] = new Vector3(0, 0, 0);     // Centre bas (Rangée 3)
+
+        generalFormationOffset = new Vector3(0, 0, -6);
+
+        for (int i = 0; i < 5; i++)
         {
             deadEnemyIndex[i] = false;
-            guards[i] = Instantiate(guardPrefab, transform.position + enemyOffset[i], transform.rotation, transform);
+            guards[i] = Instantiate(guardPrefab, playerPosition + enemySpawn[i] + (generalFormationOffset * 2), transform.rotation, transform);
             guardStateManagers[i] = guards[i].GetComponent<StateManager>();
             guardScripts[i] = guards[i].GetComponent<GuardScript>();
             healthComponents[i] = guards[i].GetComponent<HealthEnemiesComponent>();
         }    
-
-        playerObject = GameObject.Find("Player");
     }
 
     private void Update()
     {
         Vector3 playerPosition = playerObject.transform.position;
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
             if( deadEnemyIndex[i])
                 { continue; }
@@ -85,7 +102,7 @@ public class GuardFormation : MonoBehaviour
         {
             timeUntilNextOffset = maxTimeUntilNextOffset;
 
-            for (int i = 0; i < 3; i++)
+            for (int i = 0; i < 5; i++)
             {
                 if (deadEnemyIndex[i])
                 { continue; }
@@ -93,7 +110,7 @@ public class GuardFormation : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 5; i++)
         {
             if (deadEnemyIndex[i])
             {
@@ -105,7 +122,7 @@ public class GuardFormation : MonoBehaviour
                 guards[i].GetComponentInChildren<GuardIdleState>().SetFormationPosition(guards[i].transform.position);
                 continue;
             }
-            guards[i].GetComponentInChildren<GuardIdleState>().SetFormationPosition(enemyOffset[i] + playerPosition + randomGuardOffset[0]);
+            guards[i].GetComponentInChildren<GuardIdleState>().SetFormationPosition(enemyOffset[i] + playerPosition + randomGuardOffset[i] + generalFormationOffset);
         }
 
         if (!isSomebodyAttacking) 
@@ -116,6 +133,7 @@ public class GuardFormation : MonoBehaviour
             {
                 if (guardScripts[nextGuardToAttack].CanAttack() && !deadEnemyIndex[nextGuardToAttack])
                 {
+                    guardScripts[nextGuardToAttack].Accelerate();
                     guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>().player = playerObject.transform;
                     guardStateManagers[nextGuardToAttack].SwitchToNextState(guards[nextGuardToAttack].GetComponentInChildren<GuardChaseState>());
                     
