@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using UnityEngine.UI;
 
 public class HealthComponent : MonoBehaviour
@@ -12,6 +13,7 @@ public class HealthComponent : MonoBehaviour
     public float maxHealth = 100f;
     [SerializeField] private float currentHealth;
     [SerializeField] Slider lifebar;
+    [SerializeField] Volume damageVolume;
 
     [Header("Death Settings")]
     public bool isDead = false;
@@ -25,6 +27,7 @@ public class HealthComponent : MonoBehaviour
     private void Update()
     {
         lifebar.value = currentHealth / maxHealth;
+        DecreaseDamageVolume();
     }
 
     public void TakeDamage(float damageAmount)
@@ -36,6 +39,7 @@ public class HealthComponent : MonoBehaviour
 
         currentHealth -= damageAmount;
 
+        ActivateDamageVolume();
 
         Debug.Log($"Player took {damageAmount} damage. Current health: {currentHealth}");
 
@@ -46,6 +50,16 @@ public class HealthComponent : MonoBehaviour
         {
             Die();
         }
+    }
+
+    private void ActivateDamageVolume()
+    {
+        damageVolume.weight = (0.6f - (currentHealth * 0.5f / maxHealth));
+    }
+
+    private void DecreaseDamageVolume()
+    {
+        damageVolume.weight = Mathf.Lerp(damageVolume.weight, 0, 0.03f);
     }
 
     private void Die()

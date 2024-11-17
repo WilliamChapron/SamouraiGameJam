@@ -217,23 +217,33 @@ public class Attack : MonoBehaviour
             return;
         }
 
-        GameObject kunai = Instantiate(kunaiPrefab, kunaiSpawnPoint.position, kunaiSpawnPoint.rotation);
+        // Créer l'objet kunai à la position du spawn avec une rotation vierge (pour ajuster la direction)
+        Quaternion rotationWithX90 = Quaternion.Euler(0f, -90f, 0f) * transform.rotation;
+        GameObject kunai = Instantiate(kunaiPrefab, kunaiSpawnPoint.position, rotationWithX90);
 
- 
+        // Récupérer ou ajouter un Rigidbody au kunai
         Rigidbody rb = kunai.GetComponent<Rigidbody>();
         if (rb == null)
         {
-            rb = kunai.AddComponent<Rigidbody>(); 
+            rb = kunai.AddComponent<Rigidbody>();
         }
 
+        // Assurez-vous que le Rigidbody n'est pas cinématique et utilise la gravité
+        rb.isKinematic = false;
+        rb.useGravity = false;
+
+
+        Vector3 directionToThrow = transform.forward;  
+        rb.velocity = directionToThrow * kunaiSpeed;
+
+        // Vous pouvez toujours appliquer une rotation si nécessaire (ajuster la vitesse de spin)
+        // rb.angularVelocity = new Vector3(10f, 0, 0); // Optionnel pour faire tourner le kunai
+
+        // Agrandir le kunai pour un meilleur effet visuel
         Vector3 currentScale = kunai.transform.localScale;
-        kunai.transform.localScale = new Vector3(currentScale.x * 10, currentScale.y * 10, currentScale.z * 10);
+        kunai.transform.localScale = new Vector3(currentScale.x * 4, currentScale.y * 4, currentScale.z * 4);
 
-        rb.isKinematic = false; 
-        rb.useGravity = false;  
-
-        rb.velocity = transform.forward * kunaiSpeed;
-
+        // Détuire le kunai après un certain temps
         Destroy(kunai, kunaiLifetime);
     }
 }
